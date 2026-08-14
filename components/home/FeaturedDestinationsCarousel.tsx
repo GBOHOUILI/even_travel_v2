@@ -21,7 +21,12 @@ const SLIDES = [
     title: "PORTO-NOVO",
     text: "Architecture et traditions",
   },
-  { src: "/images/nati.jpg", alt: "Natitingou", title: "NATITINGOU", text: "Architecture et traditions" },
+  {
+    src: "/images/nati.jpg",
+    alt: "Natitingou",
+    title: "NATITINGOU",
+    text: "Architecture et traditions",
+  },
   { src: "/images/abomey.jpg", alt: "Abomey", title: "ABOMEY", text: "Architecture et traditions" },
 ];
 
@@ -50,7 +55,13 @@ export function FeaturedDestinationsCarousel() {
     <section className="carousel-section">
       <div className="container">
         <h3 className="section-title">Destinations Phare</h3>
-        <p style={{ textAlign: "center", color: "var(--text-muted)", marginBottom: "var(--spacing-lg)" }}>
+        <p
+          style={{
+            textAlign: "center",
+            color: "var(--text-muted)",
+            marginBottom: "var(--spacing-lg)",
+          }}
+        >
           Explorez nos destinations les plus populaires
         </p>
       </div>
@@ -90,7 +101,7 @@ export function FeaturedDestinationsCarousel() {
         </div>
 
         <Link href="/destinations">
-          <button>Découvrez toutes nos destinations</button>
+          <button className="carousel-cta">Découvrez toutes nos destinations</button>
         </Link>
       </div>
     </section>

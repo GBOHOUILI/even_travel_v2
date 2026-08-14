@@ -40,13 +40,13 @@ export function Hero() {
         className="hero__bg"
         id="heroBg"
         ref={bgRef}
-        style={{ backgroundImage: "url(/images/porte-du-non-retour-6.jpg)" }}
+        style={{ backgroundImage: "url(/images/accueil.GIF)" }}
       />
       <div className="hero__overlay" role="region" aria-label="Intro">
         <small>WELCOME TO</small>
         <h1>Even Travel</h1>
         <h2>Circuit et Immersion</h2>
-        <form className="searchbar" aria-label="Recherche" onSubmit={handleSearch}>
+        {/*<form className="searchbar" aria-label="Recherche" onSubmit={handleSearch}>
           <input
             aria-label="Recherche"
             placeholder="Recherchez un événement ou une destination..."
@@ -56,7 +56,7 @@ export function Hero() {
           <button type="submit" aria-label="Lancer la recherche">
             Search
           </button>
-        </form>
+        </form>*/}
       </div>
     </section>
   );

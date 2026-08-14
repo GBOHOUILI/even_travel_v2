@@ -20,7 +20,7 @@ export default function FaqPage() {
       <PageHero
         title="Questions fréquentes"
         subtitle="Tout ce que vous devez savoir avant de vivre une expérience unique avec Even Travel."
-        backgroundImage="https://images.unsplash.com/photo-1526772662000-3f88f10405ff"
+        backgroundImage="/images/faq.png"
       />
 
       <section className="faq-container">

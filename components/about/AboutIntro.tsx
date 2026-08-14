@@ -5,13 +5,14 @@ export function AboutIntro() {
     <section className="about-intro">
       <div className="container">
         <div className="about-intro-content">
-          <span className="eyebrow">Qui sommes-nous</span>
+          <span className="eyebrow mt-24">Qui sommes-nous</span>
+
           <h2>Bienvenue chez Even Travel</h2>
           <Image
             src="/images/sep-removebg-preview.png"
             alt=""
             aria-hidden="true"
-            width={200}
+            width={250}
             height={24}
             className="about-divider"
           />

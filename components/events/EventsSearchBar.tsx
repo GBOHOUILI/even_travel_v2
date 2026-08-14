@@ -8,7 +8,7 @@ interface EventsSearchBarProps {
 
 export function EventsSearchBar({ filters, onChange }: EventsSearchBarProps) {
   return (
-    <div className="searchbar">
+    <div className="searchbar text-gray-500">
       <input
         type="text"
         placeholder="Recherchez un événement..."

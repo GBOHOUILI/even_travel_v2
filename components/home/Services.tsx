@@ -1,14 +1,24 @@
 import Image from "next/image";
 
 const CULINARY_EXPERIENCES = [
-  { src: "/images/cul.jpg", alt: "Terre et Esprit", title: "Terre et Esprit", text: "Découverte des Egnguns à Ouidah" },
   {
-    src: "/images/saveur_du_benin.jpg",
+    src: "/images/cul.jpg",
+    alt: "Terre et Esprit",
+    title: "Terre et Esprit",
+    text: "Découverte des Egnguns à Ouidah",
+  },
+  {
+    src: "/images/saveur du benin.jpg",
     alt: "Saveurs",
     title: "Saveurs du Bénin",
     text: "Atelier cuisine traditionnelle à Cotonou",
   },
-  { src: "/images/artisanat.jpg", alt: "Artisanat", title: "Artisanat Vivant", text: "Rencontre avec des artisans à Abomey" },
+  {
+    src: "/images/artisanat.jpg",
+    alt: "Artisanat",
+    title: "Artisanat Vivant",
+    text: "Rencontre avec des artisans à Abomey",
+  },
 ];
 
 const PACKAGES = [

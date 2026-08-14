@@ -8,7 +8,7 @@ interface DestinationsSearchBarProps {
 
 export function DestinationsSearchBar({ filters, onChange }: DestinationsSearchBarProps) {
   return (
-    <div className="searchbar">
+    <div className="searchbar text-gray-500">
       <input
         type="text"
         placeholder="Recherchez une destination..."

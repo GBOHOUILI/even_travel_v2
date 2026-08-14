@@ -23,7 +23,7 @@ export default function AboutPage() {
       <PageHero
         title="À propos"
         subtitle="Votre agence de voyage et de tourisme"
-        backgroundImage="/images/about.jpg"
+        backgroundImage="/images/arr-plan.jpg"
       />
       <main>
         <AboutIntro />

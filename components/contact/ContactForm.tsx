@@ -3,35 +3,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { CONTACT_INFO } from "@/constants/config";
 import {
   CONTACT_SUBJECTS,
   contactSchema,
   type ContactFormValues,
 } from "@/features/contact/lib/contactSchema";
+import { useSendContactMessage } from "@/features/contact/hooks/useSendContactMessage";
+import { ApiError } from "@/lib/api";
 import { useToast } from "@/providers/ToastProvider";
-
-/**
- * ⚠️ Pas d'endpoint /contact confirmé côté backend au moment de cette
- * migration (voir audit) — on reproduit donc le comportement d'origine
- * (ouverture du client mail via un lien mailto:, cf. contact.html) plutôt
- * que d'inventer un appel API. À remplacer par un vrai POST via apiClient
- * dès qu'un endpoint est disponible côté backend ; le formulaire (schéma
- * de validation, états de soumission) n'aura pas à changer.
- */
-function buildMailtoLink(values: ContactFormValues): string {
-  const body = `Nom : ${values.name}\nEmail : ${values.email}\nSujet : ${values.subject}\n\nMessage :\n${values.message}`;
-
-  const params = new URLSearchParams({
-    subject: `[Even Travel] ${values.subject} - ${values.name}`,
-    body,
-  });
-
-  return `mailto:${CONTACT_INFO.email}?${params.toString()}`;
-}
 
 export function ContactForm() {
   const { showToast } = useToast();
+  const sendMessage = useSendContactMessage();
 
   const {
     register,
@@ -43,13 +26,16 @@ export function ContactForm() {
     defaultValues: { name: "", email: "", subject: undefined, message: "" },
   });
 
-  const onSubmit = handleSubmit((values) => {
-    window.location.href = buildMailtoLink(values);
-    showToast(
-      `Votre client mail va s'ouvrir pour envoyer le message à ${CONTACT_INFO.email}.`,
-      "success",
-    );
-    reset();
+  const onSubmit = handleSubmit(async (values) => {
+    try {
+      await sendMessage.mutateAsync(values);
+      showToast("Votre message a bien été envoyé, nous vous répondrons rapidement.", "success");
+      reset();
+    } catch (error) {
+      const message =
+        error instanceof ApiError ? error.message : "L'envoi du message a échoué. Réessayez.";
+      showToast(message, "error");
+    }
   });
 
   return (

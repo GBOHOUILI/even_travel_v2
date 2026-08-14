@@ -1,3 +1,4 @@
+import { EmptyState } from "@/components/ui/EmptyState";
 import { formatRelativeDate, getInitials } from "@/features/blog/lib/formatters";
 import type { Comment } from "@/types/comment";
 
@@ -6,17 +7,13 @@ export function CommentList({ comments }: { comments: Comment[] }) {
 
   if (comments.length === 0) {
     return (
-      <div className="empty-state" style={{ padding: "var(--spacing-md)" }}>
-        <p>Aucun commentaire pour le moment. Soyez le premier à laisser votre avis !</p>
-      </div>
+      <EmptyState message="Aucun commentaire pour le moment. Soyez le premier à laisser votre avis !" />
     );
   }
 
   if (approvedComments.length === 0) {
     return (
-      <div className="empty-state" style={{ padding: "var(--spacing-md)" }}>
-        <p>Les commentaires sont en attente de validation par notre équipe.</p>
-      </div>
+      <EmptyState message="Les commentaires sont en attente de validation par notre équipe." />
     );
   }
 

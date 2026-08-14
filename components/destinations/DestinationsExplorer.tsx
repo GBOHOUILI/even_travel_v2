@@ -17,7 +17,9 @@ import type { DestinationImage } from "@/types/destination";
 export function DestinationsExplorer() {
   const { data: destinations, isLoading, isError, refetch } = useDestinations();
   const [filters, setFilters] = useState<DestinationFilters>(DEFAULT_DESTINATION_FILTERS);
-  const [gallery, setGallery] = useState<{ images: DestinationImage[]; index: number } | null>(null);
+  const [gallery, setGallery] = useState<{ images: DestinationImage[]; index: number } | null>(
+    null,
+  );
 
   const filteredDestinations = destinations ? filterDestinations(destinations, filters) : undefined;
 
@@ -26,7 +28,7 @@ export function DestinationsExplorer() {
       <PageHero
         title="Toutes les Destinations"
         subtitle="Découvrez nos destinations africaines uniques"
-        backgroundImage="/images/travel.jpg"
+        backgroundImage="/images/voyage.jpeg"
       >
         <DestinationsSearchBar filters={filters} onChange={setFilters} />
       </PageHero>

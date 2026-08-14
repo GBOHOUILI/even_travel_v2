@@ -1,12 +1,10 @@
 import type { ReactNode } from "react";
-
 interface PageHeroProps {
   title: string;
   subtitle?: string;
   backgroundImage: string;
   children?: ReactNode;
 }
-
 /**
  * Variante compacte du Hero de la page d'accueil, utilisée sur les pages
  * internes (destinations, événements, blog...). Le style est défini par
@@ -18,7 +16,7 @@ export function PageHero({ title, subtitle, backgroundImage, children }: PageHer
       <div className="page-hero__bg" style={{ backgroundImage: `url(${backgroundImage})` }} />
       <div className="page-hero__overlay">
         <h1>{title}</h1>
-        {subtitle && <p>{subtitle}</p>}
+        {subtitle && <p className="text-white-900 font-bold">{subtitle}</p>}
         {children}
       </div>
     </section>

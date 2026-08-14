@@ -12,7 +12,13 @@ interface ArticlesGridProps {
   hasActiveFilter: boolean;
 }
 
-export function ArticlesGrid({ articles, isLoading, isError, onRetry, hasActiveFilter }: ArticlesGridProps) {
+export function ArticlesGrid({
+  articles,
+  isLoading,
+  isError,
+  onRetry,
+  hasActiveFilter,
+}: ArticlesGridProps) {
   if (isLoading) {
     return (
       <div className="blog-grid">
@@ -33,10 +39,15 @@ export function ArticlesGrid({ articles, isLoading, isError, onRetry, hasActiveF
     return (
       <div className="blog-grid">
         <EmptyState
+          className="empty-state-card"
+          icon={hasActiveFilter ? "🔍" : "📝"}
+          title={
+            hasActiveFilter ? "Aucun article dans cette catégorie" : "Aucun article disponible"
+          }
           message={
             hasActiveFilter
-              ? "Aucun article dans cette catégorie. Essayez une autre catégorie."
-              : "Aucun article disponible. Revenez bientôt pour découvrir nos nouveaux articles !"
+              ? "Essayez une autre catégorie ou revenez plus tard."
+              : "Revenez bientôt pour découvrir nos nouveaux articles !"
           }
         />
       </div>

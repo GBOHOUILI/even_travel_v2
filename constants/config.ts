@@ -11,7 +11,7 @@ export const SOCIAL_LINKS = {
 
 export const CONTACT_INFO = {
   address: "Cotonou, Bénin",
-  email: "eventravel79@gmail.com",
+  email: "eventravel2@gmail.com",
   phone: "+33781800811",
   hours: {
     weekdays: "Lundi au Vendredi : 9h00 à 19h00",

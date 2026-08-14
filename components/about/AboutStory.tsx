@@ -17,7 +17,7 @@ export function AboutStory() {
             </p>
           </div>
           <div className="about-story-image">
-            <Image src="/images/mme.jpg" alt="Notre équipe" width={400} height={400} />
+            <Image src="/images/montessori.jpg" alt="Notre équipe" width={400} height={400} />
           </div>
         </div>
       </div>
