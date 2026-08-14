@@ -23,14 +23,14 @@ function formatGroupSize(event: Event): string {
 
 export function EventBookingCard({ event }: EventBookingCardProps) {
   const categoryLabel = event.categorie
-    ? EVENT_CATEGORY_LABELS[event.categorie as EventCategory] ?? event.categorie
+    ? (EVENT_CATEGORY_LABELS[event.categorie as EventCategory] ?? event.categorie)
     : "Non spécifié";
 
   return (
     <aside className="booking-card">
       <div className="price-tag">
         <span className="eyebrow">Tarif</span>
-        <h1>{event.prix ? event.prix.toLocaleString("fr-FR") : "0"}</h1>
+        <p className="price-value">{event.prix ? event.prix.toLocaleString("fr-FR") : "0"}</p>
         <p>Par personne</p>
       </div>
 

@@ -2280,14 +2280,15 @@ footer {
   margin-bottom: var(--spacing-xs);
 }
 
-.price-tag h1 {
+.price-tag .price-value {
   font-size: 48px;
   color: var(--terracotta);
   font-weight: 700;
   margin-bottom: var(--spacing-xs);
+  line-height: 1.2;
 }
 
-.price-tag h1::after {
+.price-tag .price-value::after {
   content: "FCFA";
   font-size: 24px;
   margin-left: 4px;
@@ -2377,7 +2378,7 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .price-tag h1 {
+  .price-tag .price-value {
     font-size: 42px;
   }
 }

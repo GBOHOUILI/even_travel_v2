@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Italiana, Marko_One, Playfair_Display } from "next/font/google";
 
 import { AppProviders } from "@/providers/AppProviders";
+import { SITE_URL } from "@/constants/config";
 
 import "./globals.css";
 
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
   },
   description:
     "Agence de tourisme basée à Cotonou. Voyages sur mesure, écotourisme, circuits culturels et expériences authentiques en Afrique.",
-  metadataBase: new URL("https://eventravel.example"), // à remplacer par le domaine définitif
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
     locale: "fr_FR",

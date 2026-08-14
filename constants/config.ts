@@ -1,6 +1,11 @@
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "https://even-travel-backend.onrender.com/api/v1";
 
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
+  /\/$/,
+  "",
+);
+
 export const SITE_NAME = "Even Travel";
 
 export const SOCIAL_LINKS = {
