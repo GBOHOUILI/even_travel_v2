@@ -3780,8 +3780,8 @@ footer {
    À PROPOS (/about) — namespacé .about-*
    (home/AboutSection.tsx utilise déjà .about-section/.about/.text/.round
    avec des styles différents — d'où le préfixe about- ici pour ne pas
-   entrer en collision, même logique que blog-*/
-reservation-*/payment-*)
+   entrer en collision, même logique que blog-, reservation- et
+   payment- ci-dessous)
    =================================================================== */
 
 .about-intro {
