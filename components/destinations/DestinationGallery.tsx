@@ -32,7 +32,12 @@ export function DestinationGallery({ images, title }: DestinationGalleryProps) {
           onClick={() => window.open(image.url, "_blank", "noopener,noreferrer")}
           aria-label={`Ouvrir ${title} — image ${index + 1} en plein écran`}
         >
-          <Image src={image.url} alt={`${title} — image ${index + 1}`} fill sizes="33vw" />
+          <Image
+            src={image.url}
+            alt={`${title} — image ${index + 1}`}
+            fill
+            sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 300px"
+          />
         </button>
       ))}
     </div>

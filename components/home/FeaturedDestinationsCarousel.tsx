@@ -79,7 +79,7 @@ export function FeaturedDestinationsCarousel() {
         <div className="carousel-track" ref={trackRef} aria-live="polite">
           {SLIDES.map((slide, i) => (
             <div className={`slide ${i === current ? "active" : ""}`} key={slide.title}>
-              <Image src={slide.src} alt={slide.alt} width={280} height={340} />
+              <Image src={slide.src} alt={slide.alt} fill sizes="(max-width: 600px) 260px, 420px" />
               <div className="meta">
                 <strong>{slide.title}</strong>
                 <p>{slide.text}</p>

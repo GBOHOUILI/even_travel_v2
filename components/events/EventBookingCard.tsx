@@ -27,7 +27,7 @@ export function EventBookingCard({ event }: EventBookingCardProps) {
     : "Non spécifié";
 
   return (
-    <aside className="booking-card">
+    <aside className="booking-card" id="booking-card">
       <div className="price-tag">
         <span className="eyebrow">Tarif</span>
         <p className="price-value">{event.prix ? event.prix.toLocaleString("fr-FR") : "0"}</p>

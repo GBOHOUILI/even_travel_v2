@@ -20,7 +20,8 @@ function formatEventDate(event: Event): string {
 
 export function EventDetail({ event }: { event: Event }) {
   const imageUrl = event.images?.[0]?.url || DEFAULT_IMAGE;
-  const hasMomentsForts = event.momentsForts && event.momentsForts.filter((m) => m?.trim()).length > 0;
+  const hasMomentsForts =
+    event.momentsForts && event.momentsForts.filter((m) => m?.trim()).length > 0;
   const hasItinerary = event.itineraire && event.itineraire.length > 0;
   const hasInfosPratiques = Boolean(event.informationsPratiques?.trim());
   const hasRecommandations = Boolean(event.recommandations?.trim());
@@ -34,7 +35,13 @@ export function EventDetail({ event }: { event: Event }) {
   return (
     <>
       <section className="hero-section">
-        <Image src={imageUrl} alt={event.nom} fill sizes="1400px" priority />
+        <Image
+          src={imageUrl}
+          alt={event.nom}
+          fill
+          sizes="(max-width: 768px) 100vw, 1400px"
+          priority
+        />
       </section>
 
       <section className="main-content">
@@ -46,6 +53,18 @@ export function EventDetail({ event }: { event: Event }) {
             <span className="capacity">👥 {groupLabel}</span>
           </div>
 
+          <div className="mobile-price-bar">
+            <div>
+              <span className="mobile-price-bar__label">Tarif</span>
+              <span className="mobile-price-bar__value">
+                {event.prix ? `${event.prix.toLocaleString("fr-FR")} FCFA` : "Sur demande"}
+              </span>
+            </div>
+            <a href="#booking-card" className="mobile-price-bar__cta">
+              Réserver
+            </a>
+          </div>
+
           <span className="eyebrow">À propos</span>
           <h2>Description de l&apos;événement</h2>
           <p>{event.descriptionLongue?.trim() || event.description}</p>
@@ -55,11 +74,13 @@ export function EventDetail({ event }: { event: Event }) {
               <span className="eyebrow">Moments forts</span>
               <h2>Ce qui rend cet événement unique</h2>
               <div className="moments-forts-container">
-                {event.momentsForts!.filter((m) => m?.trim()).map((moment) => (
-                  <div className="moment-fort-card" key={moment}>
-                    <h4>{moment}</h4>
-                  </div>
-                ))}
+                {event
+                  .momentsForts!.filter((m) => m?.trim())
+                  .map((moment) => (
+                    <div className="moment-fort-card" key={moment}>
+                      <h4>{moment}</h4>
+                    </div>
+                  ))}
               </div>
             </div>
           )}

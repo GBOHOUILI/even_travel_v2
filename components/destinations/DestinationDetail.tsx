@@ -20,7 +20,13 @@ export function DestinationDetail({ destination }: { destination: Destination })
   return (
     <>
       <section className="hero-section">
-        <Image src={mainImageUrl} alt={destination.titre} fill sizes="1400px" priority />
+        <Image
+          src={mainImageUrl}
+          alt={destination.titre}
+          fill
+          sizes="(max-width: 768px) 100vw, 1400px"
+          priority
+        />
       </section>
 
       <section className="main-content">
@@ -30,6 +36,18 @@ export function DestinationDetail({ destination }: { destination: Destination })
             <span>📍 {destination.localisation}</span>
             <span>🌍 {destination.pays || "Afrique"}</span>
             <span>☀️ {destination.climat || "Climat tropical"}</span>
+          </div>
+
+          <div className="mobile-price-bar">
+            <div>
+              <span className="mobile-price-bar__label">Prix</span>
+              <span className="mobile-price-bar__value">
+                {formatPracticalPrice(destination.prix)}
+              </span>
+            </div>
+            <a href="#info-card" className="mobile-price-bar__cta">
+              Réserver
+            </a>
           </div>
 
           <span className="eyebrow">Découverte</span>
@@ -75,7 +93,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
           </div>
         </div>
 
-        <aside className="info-card">
+        <aside className="info-card" id="info-card">
           <div className="info-header">
             <span className="eyebrow">Informations pratiques</span>
             <h3>Guide du voyageur</h3>
@@ -110,7 +128,9 @@ export function DestinationDetail({ destination }: { destination: Destination })
             </div>
             <div className="info-row">
               <span className="info-label">📅 Meilleure période</span>
-              <span className="info-value">{destination.meilleurePeriode || "Novembre - Mars"}</span>
+              <span className="info-value">
+                {destination.meilleurePeriode || "Novembre - Mars"}
+              </span>
             </div>
             <div className="info-row">
               <span className="info-label">🏨 Budget journalier</span>

@@ -28,10 +28,10 @@ export function BlogExplorer() {
         subtitle="Partagez vos impressions"
         backgroundImage="/images/blog.jpeg"
       />
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "var(--spacing-xl) 40px" }}>
-        <div style={{ textAlign: "center", marginBottom: "var(--spacing-lg)" }}>
-          <h2 style={{ fontSize: 40 }}>Événements & Tourisme</h2>
-          <p style={{ fontSize: 20, marginTop: "var(--spacing-sm)" }}>
+      <main className="blog-intro-section">
+        <div className="blog-intro-header">
+          <h2 className="blog-intro-title">Événements &amp; Tourisme</h2>
+          <p className="blog-intro-subtitle">
             Retrouvez ici des récapitulatifs des événements passés, des photos et l&apos;espace pour
             partager vos impressions
           </p>

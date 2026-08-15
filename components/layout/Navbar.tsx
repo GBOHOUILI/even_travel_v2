@@ -21,7 +21,13 @@ export function Navbar() {
       <header>
         <nav>
           <Link href="/" className="logo" aria-label="Even Travel — Accueil">
-            <Image src="/images/logo-01.png" alt="Even Travel Logo" width={140} height={48} priority />
+            <Image
+              src="/images/logo-01.png"
+              alt="Even Travel Logo"
+              width={180}
+              height={62}
+              priority
+            />
           </Link>
 
           <ul className={`nav-links ${isOpen ? "active" : ""}`} id="navLinks">

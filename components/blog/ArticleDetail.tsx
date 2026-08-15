@@ -3,7 +3,11 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 import { ArticleGallery } from "@/components/blog/ArticleGallery";
-import { ARTICLE_CATEGORY_LABELS, getArticleCategory, getArticleImage } from "@/features/blog/lib/articleCategory";
+import {
+  ARTICLE_CATEGORY_LABELS,
+  getArticleCategory,
+  getArticleImage,
+} from "@/features/blog/lib/articleCategory";
 import { formatRelativeDate } from "@/features/blog/lib/formatters";
 import type { Article } from "@/types/article";
 
@@ -28,7 +32,13 @@ export function ArticleDetail({ article, commentCount, children }: ArticleDetail
   return (
     <article className="blog-article-view">
       <div className="blog-article-hero">
-        <Image src={imageUrl} alt={article.titre || "Article"} fill sizes="900px" priority />
+        <Image
+          src={imageUrl}
+          alt={article.titre || "Article"}
+          fill
+          sizes="(max-width: 768px) 100vw, 900px"
+          priority
+        />
         <div className="blog-article-hero-overlay" />
       </div>
 

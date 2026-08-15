@@ -18,7 +18,27 @@
   --spacing-md: 32px;
   --spacing-lg: 64px;
   --spacing-xl: 96px;
+
+  /* Padding horizontal fluide pour les containers "pleine largeur avec
+     max-width" (hero-section, main-content, faq-container, blog...).
+     Remplace les valeurs `padding: 0 40px` fixes qui ne se réduisaient
+     pas sur mobile — voir audit responsive Phase 1, section 11. */
+  --container-padding: clamp(16px, 5vw, 40px);
 }
+
+/* ===== ÉCHELLE DE BREAKPOINTS DE RÉFÉRENCE =====
+   Documentée ici pour homogénéiser les futures media queries (les
+   valeurs existantes — 1100/1024/900/768/640/600 — sont conservées
+   telles quelles pour ne pas risquer de régression visuelle sur les
+   sections déjà correctes ; les nouvelles règles ajoutées dans le
+   cadre de cette phase 2 s'alignent autant que possible sur cette
+   échelle) :
+   480px  — petit mobile
+   640px  — mobile large
+   768px  — tablette
+   1024px — petit desktop / tablette paysage
+   1280px — desktop
+   ============================================================== */
 
 * {
   box-sizing: border-box;
@@ -146,6 +166,14 @@ nav {
 .logo img {
   width: 180px;
   height: auto;
+}
+
+@media (max-width: 768px) {
+  .logo img {
+    /* Le header rétrécit (80px → 70px) sur mobile ; réduire aussi le
+       logo évite qu'il occupe une part disproportionnée de la barre. */
+    width: 130px;
+  }
 }
 
 .nav-links {
@@ -290,7 +318,11 @@ nav {
 
 .hero h1 {
   font-family: "Italiana", serif;
-  font-size: 150px;
+  /* Fluide plutôt que 3 paliers fixes (150px → 72px → 52px) : la
+     courbe reproduit ~52px à 600px et ~72px à 900px (mêmes valeurs
+     que l'ancien design) tout en interpolant sans saut brutal entre
+     les paliers, y compris sur les tailles intermédiaires. */
+  font-size: clamp(2.5rem, 1rem + 6vw, 9.375rem);
   margin: 0;
   line-height: 1;
   color: rgba(79, 2, 2, 0.735);
@@ -323,7 +355,7 @@ nav {
   border-radius: 50px;
   border: none;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  font-size: 15px;
+  font-size: 16px;
   outline: none;
 }
 
@@ -1222,8 +1254,8 @@ footer {
 }
 
 .social-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255, 140, 66, 0.1);
   display: flex;
@@ -1291,10 +1323,6 @@ footer {
     border-bottom: none;
   }
 
-  .hero h1 {
-    font-size: 72px;
-  }
-
   .carousel-wrap,
   .events-carousel-wrap {
     padding: 0 60px;
@@ -1309,6 +1337,7 @@ footer {
 
   nav {
     padding: 0 20px;
+    height: 70px;
   }
 
   /* Hamburger visible */
@@ -1382,13 +1411,13 @@ footer {
   .cta h2 {
     text-align: center;
   }
+
+  .cta button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 600px) {
-  nav {
-    height: 70px;
-  }
-
   .hero {
     height: 60vh;
     min-height: 500px;
@@ -1397,10 +1426,6 @@ footer {
   .hero__overlay {
     padding: 40px 24px;
     height: auto;
-  }
-
-  .hero h1 {
-    font-size: 52px;
   }
 
   .hero h2 {
@@ -1462,6 +1487,33 @@ footer {
 
   footer {
     padding: 40px 20px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Padding latéral des carrousels encore excessif à 480px (50px de
+     chaque côté = ~31% de la largeur d'un écran 320px juste pour la
+     place des flèches). Réduit sans supprimer l'espace nécessaire aux
+     boutons .ctrl/.events-ctrl. Audit Phase 1, P1/section 13. */
+  .carousel-wrap,
+  .events-carousel-wrap {
+    padding: 0 28px;
+  }
+
+  .slide {
+    flex: 0 0 200px;
+  }
+
+  .slide.active {
+    flex: 0 0 260px;
+  }
+
+  .event {
+    flex: 0 0 200px;
+  }
+
+  .event.active {
+    flex: 0 0 260px;
   }
 }
 
@@ -1702,9 +1754,22 @@ footer {
   width: 100%;
   max-width: 1400px;
   margin: var(--spacing-md) auto;
-  padding: 0 40px;
+  padding: 0 var(--container-padding);
   position: relative;
-  height: 600px;
+  /* Hauteur pilotée par le contenu plutôt que fixe : évite l'image
+     disproportionnée sur mobile (600px fixe occupait ~90% de la
+     hauteur visible sur un 375×667). `max-height` conserve le rendu
+     desktop d'origine (600px). Voir audit Phase 1, section 14/27 P0#1. */
+  aspect-ratio: 16 / 9;
+  max-height: 600px;
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    /* Un peu plus vertical sur très petit mobile pour laisser le
+       sujet de l'image respirer (évite un bandeau trop plat). */
+    aspect-ratio: 4 / 3;
+  }
 }
 
 .hero-section img {
@@ -1716,7 +1781,7 @@ footer {
 .main-content {
   max-width: 1400px;
   margin: var(--spacing-lg) auto;
-  padding: 0 40px;
+  padding: 0 var(--container-padding);
   display: grid;
   grid-template-columns: 1fr 420px;
   gap: var(--spacing-lg);
@@ -1729,7 +1794,10 @@ footer {
 }
 
 .content-left h1 {
-  font-size: 42px;
+  /* Fluide : ~28px sur petit mobile jusqu'à 42px (valeur desktop
+     d'origine) à partir de ~1300px. Seul grand titre du site qui
+     n'avait aucune variante mobile (audit P0#3). */
+  font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.625rem);
   font-weight: 600;
   color: var(--deep-brown);
   margin-bottom: var(--spacing-sm);
@@ -1809,6 +1877,7 @@ footer {
   position: sticky;
   top: 100px;
   height: fit-content;
+  scroll-margin-top: 100px;
 }
 
 .info-header {
@@ -1887,16 +1956,27 @@ footer {
 }
 
 .gallery-grid {
+  /* Fluide sur mobile (auto-fit) plutôt que 3 colonnes fixes qui
+     n'avaient aucune media query dans tout le fichier — vignettes
+     illisibles (<90px) sur petit mobile. À partir de 768px on repasse
+     explicitement à 3 colonnes pour préserver le rendu desktop
+     d'origine (audit Phase 1, P0#4). */
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: var(--spacing-sm);
   margin-top: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .gallery-grid button {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 140px;
   padding: 0;
   border: none;
   cursor: pointer;
@@ -1912,6 +1992,12 @@ footer {
 .gallery-grid button:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .gallery-grid button {
+    height: 200px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -2216,6 +2302,7 @@ footer {
   position: sticky;
   top: 100px;
   height: fit-content;
+  scroll-margin-top: 100px;
 }
 
 .price-tag {
@@ -2231,7 +2318,10 @@ footer {
 }
 
 .price-tag .price-value {
-  font-size: 48px;
+  /* Fluide (32px→48px) : l'ancien palier unique à 768px (48→42px)
+     laissait le prix trop grand sur les mobiles les plus étroits,
+     notamment combiné au suffixe "FCFA" accolé (audit P1). */
+  font-size: clamp(2rem, 1.7rem + 1.2vw, 3rem);
   color: var(--terracotta);
   font-weight: 700;
   margin-bottom: var(--spacing-xs);
@@ -2327,9 +2417,93 @@ footer {
   .events-grid {
     grid-template-columns: 1fr;
   }
+}
 
-  .price-tag .price-value {
-    font-size: 42px;
+@media (max-width: 480px) {
+  /* Padding encore conséquent sur mobile étroit (48px de var(--spacing-lg)
+     de chaque côté à 768px) : on réduit une nouvelle fois le padding
+     interne des blocs content-left/info-card/booking-card sous 480px. */
+  .content-left,
+  .info-card,
+  .booking-card {
+    padding: var(--spacing-md);
+  }
+}
+
+/* ----- Barre de prix compacte mobile (Event/Destination Detail) -----
+   Sur mobile, .booking-card/.info-card (qui contiennent le prix et le
+   CTA de réservation) arrivent en DOM après tout le texte descriptif,
+   car .main-content passe en 1 colonne sans changer l'ordre du DOM
+   (voir audit Phase 1, section 14, P0#6). Plutôt que de restructurer
+   entièrement le layout (risque de régression SEO/JSON-LD), on affiche
+   un bloc prix + CTA compact juste sous le bloc "meta", qui renvoie
+   vers la carte complète plus bas dans la page. Masqué dès 1024px, où
+   .booking-card/.info-card redeviennent visibles tôt (aside sticky). */
+.mobile-price-bar {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobile-price-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    background: var(--white);
+    border: 1px solid var(--stone);
+    border-left: 4px solid var(--terracotta);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .mobile-price-bar__label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  .mobile-price-bar__value {
+    display: block;
+    font-size: clamp(1.125rem, 1rem + 1.5vw, 1.5rem);
+    font-weight: 700;
+    color: var(--terracotta);
+  }
+
+  .mobile-price-bar__cta {
+    flex-shrink: 0;
+    background: var(--terracotta);
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    /* Zone tactile confortable (≥44px de hauteur, cf. recommandation
+       WCAG déjà appliquée ailleurs sur le site). */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-price-bar__cta:hover,
+  .mobile-price-bar__cta:focus-visible {
+    background: var(--bronze);
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-price-bar {
+    flex-wrap: wrap;
+  }
+
+  .mobile-price-bar__cta {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -2571,7 +2745,7 @@ footer {
   border-radius: 50px;
   border: none;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  font-size: 15px;
+  font-size: 16px;
   outline: none;
   transition: all 0.3s ease;
 }
@@ -2652,6 +2826,36 @@ footer {
   margin-bottom: var(--spacing-lg);
   flex-wrap: wrap;
   gap: var(--spacing-sm);
+}
+
+/* ----- En-tête de page /blog (remplace les styles inline de
+   BlogExplorer.tsx : fontSize/padding fixes qui ne participaient à
+   aucune media query, incohérents avec .blog-section-title juste en
+   dessous. Audit Phase 1, P1.) ----- */
+.blog-intro-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--container-padding);
+}
+
+.blog-intro-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.blog-intro-title {
+  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+  font-weight: 600;
+  color: var(--deep-brown);
+}
+
+.blog-intro-subtitle {
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  margin-top: var(--spacing-sm);
+  color: var(--text-muted);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .blog-section-title {
@@ -3003,7 +3207,7 @@ footer {
   padding: 14px 16px;
   border: 1px solid var(--stone);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   font-family: inherit;
   outline: none;
   transition: all 0.3s ease;
@@ -3242,6 +3446,10 @@ footer {
   .blog-card-image-container {
     height: 200px;
   }
+
+  .blog-article-hero {
+    height: 220px;
+  }
 }
 
 /* ===================================================================
@@ -3321,7 +3529,7 @@ footer {
   padding: 14px 16px;
   border: 2px solid var(--stone);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   font-family: inherit;
   transition: all 0.3s ease;
   outline: none;
@@ -3966,7 +4174,7 @@ footer {
   padding: 16px;
   border: 2px solid var(--stone);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   font-family: var(--font-inter), sans-serif;
   transition: all 0.3s ease;
   outline: none;
@@ -4301,7 +4509,7 @@ footer {
   width: 100%;
   padding: 16px 20px;
   border: 2px solid var(--stone);
-  font-size: 15px;
+  font-size: 16px;
   transition: all 0.3s ease;
   outline: none;
   font-family: var(--font-inter), sans-serif;
@@ -5293,7 +5501,7 @@ footer {
   flex: 1;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .admin-detail-columns {
     grid-template-columns: 1fr;
   }

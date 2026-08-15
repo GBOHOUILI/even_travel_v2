@@ -10,7 +10,7 @@ export function Footer() {
       <div className="footer-content">
         <div className="footer-section">
           <div className="footer-logo">
-            <Image src="/images/logo-01.png" alt="Even Travel Logo" width={140} height={48} />
+            <Image src="/images/logo-01.png" alt="Even Travel Logo" width={180} height={62} />
           </div>
           <p className="footer-text">
             Explorez l&apos;Afrique à travers des événements et destinations inoubliables.
