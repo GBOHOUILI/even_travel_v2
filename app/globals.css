@@ -415,6 +415,32 @@ section.intro {
   margin-bottom: var(--spacing-md);
 }
 
+/* ----- Groupe de CTA de l'intro (remplace le <p style={{marginLeft:12}}>
+   inline : permet un vrai contrôle responsive, notamment pour garder les
+   deux boutons côte à côte et réduits sur mobile). ----- */
+.intro-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .intro-cta-group {
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .intro-cta-group .btn-primary,
+  .intro-cta-group .btn-secondary {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+}
+
 .grid-images {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -644,8 +670,17 @@ section.destinations-section {
   gap: var(--spacing-md);
   padding: var(--spacing-md) 0;
   overflow-x: auto;
-  scroll-behavior: smooth;
   scrollbar-width: none;
+
+  --carousel-active-width: 420px;
+  padding-inline: calc((100% - var(--carousel-active-width)) / 2);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+
+.carousel-track.is-dragging {
+  scroll-snap-type: none;
 }
 
 .carousel-track::-webkit-scrollbar {
@@ -659,7 +694,11 @@ section.destinations-section {
   aspect-ratio: 4/5;
   opacity: 0.6;
   transform: scale(0.94);
-  transition: all 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
 
 .slide.active {
@@ -795,8 +834,37 @@ section.destinations-section {
   gap: var(--spacing-md);
   padding: var(--spacing-md) 0;
   overflow-x: auto;
-  scroll-behavior: smooth;
   scrollbar-width: none;
+
+  --events-active-width: 340px;
+  padding-inline: calc((100% - var(--events-active-width)) / 2);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+
+.events-carousel-track.is-dragging {
+  scroll-snap-type: none;
+}
+
+.events-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.event-carousel-item {
+  flex: 0 0 var(--events-active-width);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  opacity: 0.6;
+  transform: scale(0.96);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.event-carousel-item.active {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .events-carousel-track::-webkit-scrollbar {
@@ -1327,6 +1395,10 @@ footer {
   .events-carousel-wrap {
     padding: 0 60px;
   }
+
+  .events-carousel-track {
+    --events-active-width: 300px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1392,7 +1464,12 @@ footer {
   }
 
   .activities {
-    grid-template-columns: 1fr;
+    /* Corrigé : même bug que .grid-images — passait à 1 colonne, donc
+       chaque tuile (aspect-ratio 3/4) prenait toute la largeur de
+       l'écran et devenait disproportionnée. On garde 2 colonnes comme
+       sur desktop/tablette, avec un gap réduit adapté au mobile. */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   .value-props .container {
@@ -1450,15 +1527,27 @@ footer {
   }
 
   .grid-images {
-    grid-template-columns: 1fr;
+    /* Corrigé : gardait 1 colonne, donc chaque image prenait toute la
+       largeur de l'écran (avec aspect-ratio 4/5, ça devenait énorme).
+       On garde 2 colonnes comme sur desktop, avec un gap réduit. */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   .dest-list {
-    grid-template-columns: 1fr;
+    /* Corrigé : même bug — 1 colonne faisait prendre toute la largeur
+       de l'écran à chaque image (aspect-ratio 3/4). On reste sur 2
+       colonnes (déjà le cas à 768px) avec un gap réduit. */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   .slide {
     flex: 0 0 240px;
+  }
+
+  .carousel-track {
+    --carousel-active-width: 300px;
   }
 
   .slide.active {
@@ -1504,6 +1593,10 @@ footer {
     flex: 0 0 200px;
   }
 
+  .carousel-track {
+    --carousel-active-width: 260px;
+  }
+
   .slide.active {
     flex: 0 0 260px;
   }
@@ -1514,6 +1607,71 @@ footer {
 
   .event.active {
     flex: 0 0 260px;
+  }
+
+  .grid-images {
+    gap: 6px;
+  }
+
+  .activities,
+  .dest-list {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 600px) {
+  .events-carousel-track {
+    --events-active-width: 82vw;
+  }
+
+  .event-carousel-item .event-image-container {
+    aspect-ratio: 16 / 9;
+  }
+
+  .event-carousel-item .event-details {
+    padding: var(--spacing-sm);
+  }
+
+  .event-carousel-item .event-title {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .event-carousel-item .event-tags {
+    margin-bottom: 8px;
+    gap: 4px;
+  }
+
+  .event-carousel-item .event-tag {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .event-carousel-item .event-info {
+    gap: 4px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .event-carousel-item .event-price {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .event-carousel-item .event-buttons .btn-details,
+  .event-carousel-item .event-buttons .btn-reserve {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .events-carousel-track {
+    --events-active-width: 86vw;
+  }
+
+  .event-carousel-item .event-image-container {
+    aspect-ratio: 16 / 10;
   }
 }
 
@@ -2062,7 +2220,7 @@ footer {
 .event-image-container {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3 / 2;
 }
 
 .event-image-container img {
@@ -2089,56 +2247,88 @@ footer {
   z-index: 10;
 }
 
+.event-category-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--bronze);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
 .event-details {
-  padding: var(--spacing-md);
+  padding: 20px;
 }
 
 .event-title {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--deep-brown);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 10px;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.event-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: var(--spacing-sm);
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.event-info-item {
+.event-meta-line {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.event-meta-line i {
+  color: var(--ochre);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.event-meta-dot {
+  color: var(--stone);
+}
+
+.event-meta-place {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .event-price {
   color: var(--terracotta);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 12px;
 }
 
 .event-buttons {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .event-buttons .btn-details {
   flex: 1;
-  padding: 12px 24px;
+  padding: 10px 16px;
   background: transparent;
   border: 2px solid var(--bronze);
   color: var(--bronze);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
 }
 
 .event-buttons .btn-details:hover {
@@ -2147,17 +2337,17 @@ footer {
 }
 
 .event-buttons .btn-reserve {
-  flex: 2;
-  padding: 12px 24px;
+  flex: 1;
+  padding: 10px 16px;
   background: var(--terracotta);
   border: none;
   color: white;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   text-decoration: none;
   display: flex;
   align-items: center;

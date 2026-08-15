@@ -25,7 +25,6 @@ export function UpcomingEventsCarousel() {
 
   const { trackRef, current, goTo, next, prev } = useCarousel({
     itemCount: events.length,
-    itemWidth: ITEM_WIDTH,
   });
 
   useRevealOnScroll([".event-carousel-item.fade-in"], [events.length]);

@@ -12,16 +12,14 @@ export function Intro() {
             Agence de tourisme basée à Cotonou. Voyages sur mesure, écotourisme, circuits culturels
             et expériences authentiques. Assistance locale et organisation professionnelle.
           </p>
-          <p style={{ marginTop: 24 }}>
+          <div className="intro-cta-group">
             <Link href="/contact">
               <button className="btn-primary">Planifier mon voyage</button>
             </Link>
             <Link href="/destinations">
-              <button className="btn-secondary" style={{ marginLeft: 12 }}>
-                Voir nos destinations
-              </button>
+              <button className="btn-secondary">Voir nos destinations</button>
             </Link>
-          </p>
+          </div>
         </div>
         <aside>
           <div className="grid-images">
