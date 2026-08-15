@@ -11,11 +11,13 @@ import { Intro } from "@/components/home/Intro";
 import { Services } from "@/components/home/Services";
 import { UpcomingEventsCarousel } from "@/components/home/UpcomingEventsCarousel";
 import { ValueProps } from "@/components/home/ValueProps";
+import { canonicalUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Accueil",
   description:
     "Even Travel — Circuit et Immersion. Agence de tourisme à Cotonou : voyages sur mesure, écotourisme et circuits culturels en Afrique.",
+  alternates: { canonical: canonicalUrl("/") },
 };
 
 export default function HomePage() {

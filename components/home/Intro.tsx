@@ -9,9 +9,8 @@ export function Intro() {
           <span className="eyebrow">Découvrir l&apos;Afrique autrement</span>
           <h3>Voyager autrement. Vivre l&apos;Afrique, pas seulement la visiter.</h3>
           <p>
-            Agence de tourisme basée à Cotonou. Voyages sur mesure, écotourisme, circuits
-            culturels et expériences authentiques. Assistance locale et organisation
-            professionnelle.
+            Agence de tourisme basée à Cotonou. Voyages sur mesure, écotourisme, circuits culturels
+            et expériences authentiques. Assistance locale et organisation professionnelle.
           </p>
           <p style={{ marginTop: 24 }}>
             <Link href="/contact">
@@ -29,14 +28,14 @@ export function Intro() {
             <Image
               className="img-zoom"
               src="/images/mur du port.jpg"
-              alt="murales"
+              alt="Fresque murale traditionnelle au port de Cotonou, Bénin"
               width={280}
               height={280}
             />
             <Image
               className="img-zoom"
               src="/images/ouidah.jpg"
-              alt="porte"
+              alt="Porte du Non-Retour à Ouidah, Bénin"
               width={280}
               height={280}
             />
@@ -45,14 +44,14 @@ export function Intro() {
             <Image
               className="img-zoom"
               src="/images/amazone.jpg"
-              alt="statue"
+              alt="Statue de l'Amazone, symbole culturel béninois"
               width={280}
               height={280}
             />
             <Image
               className="img-zoom"
               src="/images/femmes rurales.jpg"
-              alt="femme"
+              alt="Femmes en milieu rural béninois lors d'une activité traditionnelle"
               width={280}
               height={280}
             />

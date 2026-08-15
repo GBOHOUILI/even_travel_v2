@@ -30,7 +30,7 @@ export function BlogExplorer() {
       />
       <main style={{ maxWidth: 1200, margin: "0 auto", padding: "var(--spacing-xl) 40px" }}>
         <div style={{ textAlign: "center", marginBottom: "var(--spacing-lg)" }}>
-          <h1 style={{ fontSize: 40 }}>Événements & Tourisme</h1>
+          <h2 style={{ fontSize: 40 }}>Événements & Tourisme</h2>
           <p style={{ fontSize: 20, marginTop: "var(--spacing-sm)" }}>
             Retrouvez ici des récapitulatifs des événements passés, des photos et l&apos;espace pour
             partager vos impressions

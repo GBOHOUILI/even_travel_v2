@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Italiana, Marko_One, Playfair_Display } from "next/font/google";
 
+import { JsonLd } from "@/components/seo/JsonLd";
 import { AppProviders } from "@/providers/AppProviders";
 import { SITE_URL } from "@/constants/config";
+import { buildOrganizationSchema, buildWebsiteSchema } from "@/lib/structuredData";
 
 import "./globals.css";
 
@@ -65,6 +67,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <JsonLd data={buildOrganizationSchema()} />
+        <JsonLd data={buildWebsiteSchema()} />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

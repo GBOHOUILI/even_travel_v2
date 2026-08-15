@@ -131,63 +131,71 @@ export function ArticlesTable() {
             </button>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Titre</th>
-              <th>Auteur</th>
-              <th>Date</th>
-              <th>Catégorie</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading && (
+        <div className="admin-table-scroll">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={6}>Chargement des articles...</td>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Date</th>
+                <th>Catégorie</th>
+                <th>Statut</th>
+                <th>Actions</th>
               </tr>
-            )}
-            {!isLoading && paginated.length === 0 && (
-              <tr>
-                <td colSpan={6}>Aucun article disponible</td>
-              </tr>
-            )}
-            {paginated.map((article) => (
-              <tr key={article._id}>
-                <td>{article.titre}</td>
-                <td>{article.auteur}</td>
-                <td>
-                  {new Date(article.datePublication || article.createdAt).toLocaleDateString("fr-FR")}
-                </td>
-                <td>
-                  {article.categorie
-                    ? ADMIN_ARTICLE_CATEGORY_LABELS[article.categorie as AdminArticleCategory]
-                    : "—"}
-                </td>
-                <td>
-                  <StatusBadge active={article.published} activeLabel="Publié" inactiveLabel="Brouillon" />
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="admin-action-btn admin-edit-btn"
-                    onClick={() => setFormModal({ open: true, articleId: article._id })}
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    type="button"
-                    className="admin-action-btn admin-delete-btn"
-                    onClick={() => setPendingDeleteId(article._id)}
-                  >
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {isLoading && (
+                <tr>
+                  <td colSpan={6}>Chargement des articles...</td>
+                </tr>
+              )}
+              {!isLoading && paginated.length === 0 && (
+                <tr>
+                  <td colSpan={6}>Aucun article disponible</td>
+                </tr>
+              )}
+              {paginated.map((article) => (
+                <tr key={article._id}>
+                  <td>{article.titre}</td>
+                  <td>{article.auteur}</td>
+                  <td>
+                    {new Date(article.datePublication || article.createdAt).toLocaleDateString(
+                      "fr-FR",
+                    )}
+                  </td>
+                  <td>
+                    {article.categorie
+                      ? ADMIN_ARTICLE_CATEGORY_LABELS[article.categorie as AdminArticleCategory]
+                      : "—"}
+                  </td>
+                  <td>
+                    <StatusBadge
+                      active={article.published}
+                      activeLabel="Publié"
+                      inactiveLabel="Brouillon"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-edit-btn"
+                      onClick={() => setFormModal({ open: true, articleId: article._id })}
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-delete-btn"
+                      onClick={() => setPendingDeleteId(article._id)}
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {totalPages > 1 && (
           <div className="admin-pagination">

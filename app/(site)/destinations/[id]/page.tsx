@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { DestinationDetail } from "@/components/destinations/DestinationDetail";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { destinationsApi } from "@/features/destinations/api/destinations.api";
 import { ApiError } from "@/lib/api";
+import { canonicalUrl } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildTouristDestinationSchema } from "@/lib/structuredData";
 
 interface DestinationPageProps {
   params: Promise<{ id: string }>;
@@ -25,12 +29,16 @@ export async function generateMetadata({ params }: DestinationPageProps): Promis
 
   try {
     const destination = await destinationsApi.getById(id);
+    // Priorité au champ SEO dédié du CMS (metaDescription), pensé pour ça,
+    // plutôt qu'à une simple troncature de la description éditoriale.
+    const description = destination.metaDescription || destination.description?.slice(0, 160);
     return {
       title: destination.titre,
-      description: destination.description?.slice(0, 160),
+      description,
+      alternates: { canonical: canonicalUrl(`/destinations/${id}`) },
       openGraph: {
         title: destination.titre,
-        description: destination.description?.slice(0, 160),
+        description,
         images: destination.images?.[0]?.url ? [destination.images[0].url] : undefined,
       },
     };
@@ -42,6 +50,26 @@ export async function generateMetadata({ params }: DestinationPageProps): Promis
 export default async function DestinationPage({ params }: DestinationPageProps) {
   const { id } = await params;
   const destination = await getDestinationOrNotFound(id);
+  const url = canonicalUrl(`/destinations/${id}`);
 
-  return <DestinationDetail destination={destination} />;
+  const breadcrumbItems = [
+    { name: "Accueil", url: canonicalUrl("/") },
+    { name: "Destinations", url: canonicalUrl("/destinations") },
+    { name: destination.titre, url },
+  ];
+
+  return (
+    <>
+      <JsonLd data={buildTouristDestinationSchema(destination, url)} />
+      <JsonLd data={buildBreadcrumbSchema(breadcrumbItems)} />
+      <Breadcrumbs
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Destinations", href: "/destinations" },
+          { label: destination.titre },
+        ]}
+      />
+      <DestinationDetail destination={destination} />
+    </>
+  );
 }

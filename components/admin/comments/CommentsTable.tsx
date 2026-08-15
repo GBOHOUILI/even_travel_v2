@@ -51,8 +51,7 @@ export function CommentsTable() {
     approveComment.mutate(id, {
       onSuccess: () => showToast("Commentaire approuvé avec succès !", "success"),
       onError: (error) => {
-        const message =
-          error instanceof ApiError ? error.message : "Erreur lors de l'approbation.";
+        const message = error instanceof ApiError ? error.message : "Erreur lors de l'approbation.";
         showToast(message, "error");
       },
     });
@@ -97,74 +96,80 @@ export function CommentsTable() {
             </select>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Utilisateur</th>
-              <th>Article</th>
-              <th>Commentaire</th>
-              <th>Date</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading && (
+        <div className="admin-table-scroll">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={6}>Chargement des commentaires...</td>
+                <th>Utilisateur</th>
+                <th>Article</th>
+                <th>Commentaire</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Actions</th>
               </tr>
-            )}
-            {!isLoading && paginated.length === 0 && (
-              <tr>
-                <td colSpan={6}>Aucun commentaire disponible</td>
-              </tr>
-            )}
-            {paginated.map((comment) => (
-              <tr key={comment._id}>
-                <td>{comment.nom || "Anonyme"}</td>
-                <td>{getArticleTitle(comment.article)}</td>
-                <td>
-                  {comment.message.length > MESSAGE_PREVIEW_LENGTH
-                    ? `${comment.message.slice(0, MESSAGE_PREVIEW_LENGTH)}...`
-                    : comment.message}
-                </td>
-                <td>{new Date(comment.createdAt).toLocaleDateString("fr-FR")}</td>
-                <td>
-                  <StatusBadge active={comment.approved} activeLabel="Approuvé" inactiveLabel="En attente" />
-                </td>
-                <td>
-                  {!comment.approved ? (
-                    <>
-                      <button
-                        type="button"
-                        className="admin-action-btn admin-edit-btn"
-                        onClick={() => handleApprove(comment._id)}
-                        disabled={approveComment.isPending}
-                      >
-                        Approuver
-                      </button>
+            </thead>
+            <tbody>
+              {isLoading && (
+                <tr>
+                  <td colSpan={6}>Chargement des commentaires...</td>
+                </tr>
+              )}
+              {!isLoading && paginated.length === 0 && (
+                <tr>
+                  <td colSpan={6}>Aucun commentaire disponible</td>
+                </tr>
+              )}
+              {paginated.map((comment) => (
+                <tr key={comment._id}>
+                  <td>{comment.nom || "Anonyme"}</td>
+                  <td>{getArticleTitle(comment.article)}</td>
+                  <td>
+                    {comment.message.length > MESSAGE_PREVIEW_LENGTH
+                      ? `${comment.message.slice(0, MESSAGE_PREVIEW_LENGTH)}...`
+                      : comment.message}
+                  </td>
+                  <td>{new Date(comment.createdAt).toLocaleDateString("fr-FR")}</td>
+                  <td>
+                    <StatusBadge
+                      active={comment.approved}
+                      activeLabel="Approuvé"
+                      inactiveLabel="En attente"
+                    />
+                  </td>
+                  <td>
+                    {!comment.approved ? (
+                      <>
+                        <button
+                          type="button"
+                          className="admin-action-btn admin-edit-btn"
+                          onClick={() => handleApprove(comment._id)}
+                          disabled={approveComment.isPending}
+                        >
+                          Approuver
+                        </button>
+                        <button
+                          type="button"
+                          className="admin-action-btn admin-delete-btn"
+                          onClick={() => setPendingDeleteId(comment._id)}
+                        >
+                          Rejeter
+                        </button>
+                      </>
+                    ) : (
                       <button
                         type="button"
                         className="admin-action-btn admin-delete-btn"
                         onClick={() => setPendingDeleteId(comment._id)}
                       >
-                        Rejeter
+                        Supprimer
                       </button>
-                    </>
-                  ) : (
-                    <button
-                      type="button"
-                      className="admin-action-btn admin-delete-btn"
-                      onClick={() => setPendingDeleteId(comment._id)}
-                    >
-                      Supprimer
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {totalPages > 1 && (
           <div className="admin-pagination">

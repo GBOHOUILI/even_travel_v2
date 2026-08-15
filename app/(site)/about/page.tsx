@@ -5,11 +5,13 @@ import { AboutMission } from "@/components/about/AboutMission";
 import { AboutStory } from "@/components/about/AboutStory";
 import { AboutValues } from "@/components/about/AboutValues";
 import { PageHero } from "@/components/ui/PageHero";
+import { canonicalUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "À propos",
   description:
     "Even Travel, agence de tourisme à Cotonou : notre mission éducative et humanitaire en Afrique, nos valeurs et notre vision du voyage responsable.",
+  alternates: { canonical: canonicalUrl("/about") },
   openGraph: {
     title: "À propos — Even Travel",
     description:

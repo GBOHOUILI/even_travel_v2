@@ -104,63 +104,13 @@ h4 {
   display: block;
 }
 
-/* ===== RESPONSIVE BREAKPOINTS ===== */
-
-@media (max-width: 768px) {
-  nav {
-    padding: 0 20px !important;
-  }
-
-  /* Afficher le hamburger */
-  .hamburger {
-    display: flex !important;
-  }
-
-  /* Menu latéral (slide-in) */
-  .nav-links {
-    position: fixed !important;
-    top: 0 !important;
-    right: -100% !important;
-    height: 100vh !important;
-    width: 75% !important;
-    max-width: 320px !important;
-    background: #faf8f5 !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    padding: 80px 40px 40px !important;
-    transition: right 0.35s ease !important;
-    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15) !important;
-    z-index: 1050 !important;
-    gap: 8px !important;
-  }
-
-  .nav-links.active {
-    right: 0 !important;
-  }
-
-  .nav-links li {
-    width: 100%;
-    text-align: center;
-  }
-
-  .nav-links a {
-    display: block !important;
-    padding: 14px 20px !important;
-    font-size: 16px !important;
-    border-radius: 8px !important;
-  }
-
-  .nav-links a:hover {
-    background: #e8ddd0 !important;
-  }
-}
-
-@media (max-width: 600px) {
-  nav {
-    height: 70px !important;
-  }
-}
+/* ===== RESPONSIVE BREAKPOINTS =====
+   Le menu mobile (.nav-links, .hamburger) et le "nav { height }" avaient
+   deux définitions strictement identiques dans ce fichier — l'une ici en
+   !important avec des couleurs en dur, l'autre plus bas (~L.1354, section
+   HERO/HOMEPAGE) en valeurs normales + variables CSS. Même rendu final
+   dans les deux cas ; on ne garde que la version propre plus bas pour
+   éviter la dérive si l'une des deux est modifiée sans l'autre. */
 
 /* ===== HEADER ===== */
 header {
@@ -4784,8 +4734,19 @@ footer {
   color: white;
 }
 
+/* Le tableau seul (pas le header/filtres au-dessus) devient scrollable
+   horizontalement sur les viewports étroits, plutôt que d'être coupé par
+   l'ancien overflow: hidden du conteneur parent. Le comportement desktop
+   est inchangé (le contenu tient déjà dans la largeur, donc pas de
+   scrollbar visible). */
+.admin-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .admin-data-table table {
   width: 100%;
+  min-width: 640px;
   border-collapse: collapse;
 }
 
@@ -5635,4 +5596,51 @@ footer {
   color: var(--text-muted);
   font-family: var(--font-inter), sans-serif;
   font-size: 15px;
+}
+
+/* ===== BREADCRUMBS =====
+   Ajouté pour le maillage interne / rich snippets BreadcrumbList
+   (voir components/ui/Breadcrumbs.tsx). Bloc additif, ne modifie
+   aucune règle existante. */
+.breadcrumbs {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-sm) 40px 0;
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumbs a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--bronze);
+  text-decoration: underline;
+}
+
+.breadcrumbs__separator {
+  color: var(--stone);
+}
+
+@media (max-width: 600px) {
+  .breadcrumbs {
+    padding: var(--spacing-xs) 20px 0;
+    font-size: 13px;
+  }
 }

@@ -8,7 +8,11 @@ import { useDeletePayment } from "@/features/payments/hooks/useDeletePayment";
 import { usePayments } from "@/features/payments/hooks/usePayments";
 import { usePaymentsStats } from "@/features/payments/hooks/usePaymentsStats";
 import { getPaymentMethodLabel } from "@/features/payments/lib/paymentMethod";
-import { PAYMENT_STATUSES, getPaymentStatusClass, getPaymentStatusLabel } from "@/features/payments/lib/paymentStatus";
+import {
+  PAYMENT_STATUSES,
+  getPaymentStatusClass,
+  getPaymentStatusLabel,
+} from "@/features/payments/lib/paymentStatus";
 import { ApiError } from "@/lib/api";
 import { exportToCsv } from "@/lib/exportCsv";
 import { useToast } from "@/providers/ToastProvider";
@@ -181,78 +185,86 @@ export function PaymentsTable() {
             </button>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Référence Moneroo</th>
-              <th>Client</th>
-              <th>Réservation</th>
-              <th>Méthode</th>
-              <th>Montant</th>
-              <th>Date</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading && (
+        <div className="admin-table-scroll">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={8}>Chargement des paiements...</td>
+                <th>Référence Moneroo</th>
+                <th>Client</th>
+                <th>Réservation</th>
+                <th>Méthode</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Actions</th>
               </tr>
-            )}
-            {!isLoading && paginated.length === 0 && (
-              <tr>
-                <td colSpan={8}>Aucun paiement disponible</td>
-              </tr>
-            )}
-            {paginated.map((payment) => {
-              const reservation = payment.reservation;
-              const clientNom = reservation?.client?.nom || payment.details?.payerName || "—";
-              const clientPrenom = reservation?.client?.prenom || "";
-              const reservationRef = reservation?._id ? `${reservation._id.slice(0, 8)}...` : "—";
-              const monerooRef =
-                payment.details?.transactionId || `${payment._id.slice(0, 12)}...`;
-
-              return (
-                <tr key={payment._id}>
-                  <td className="admin-mono-cell">{monerooRef}</td>
-                  <td>
-                    {clientPrenom} {clientNom}
-                  </td>
-                  <td className="admin-mono-cell">{reservationRef}</td>
-                  <td>{getPaymentMethodLabel(payment.methodePaiement)}</td>
-                  <td>{payment.montant ? `${payment.montant.toLocaleString("fr-FR")} FCFA` : "0 FCFA"}</td>
-                  <td>
-                    {payment.createdAt
-                      ? new Date(payment.createdAt).toLocaleDateString("fr-FR")
-                      : "—"}
-                  </td>
-                  <td>
-                    <span className={`admin-status-badge ${getPaymentStatusClass(payment.statut)}`}>
-                      {getPaymentStatusLabel(payment.statut)}
-                    </span>
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="admin-action-btn admin-edit-btn"
-                      onClick={() => setSelectedPaymentId(payment._id)}
-                    >
-                      Détails
-                    </button>
-                    <button
-                      type="button"
-                      className="admin-action-btn admin-delete-btn"
-                      onClick={() => setPendingDeleteId(payment._id)}
-                    >
-                      Supprimer
-                    </button>
-                  </td>
+            </thead>
+            <tbody>
+              {isLoading && (
+                <tr>
+                  <td colSpan={8}>Chargement des paiements...</td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              )}
+              {!isLoading && paginated.length === 0 && (
+                <tr>
+                  <td colSpan={8}>Aucun paiement disponible</td>
+                </tr>
+              )}
+              {paginated.map((payment) => {
+                const reservation = payment.reservation;
+                const clientNom = reservation?.client?.nom || payment.details?.payerName || "—";
+                const clientPrenom = reservation?.client?.prenom || "";
+                const reservationRef = reservation?._id ? `${reservation._id.slice(0, 8)}...` : "—";
+                const monerooRef =
+                  payment.details?.transactionId || `${payment._id.slice(0, 12)}...`;
+
+                return (
+                  <tr key={payment._id}>
+                    <td className="admin-mono-cell">{monerooRef}</td>
+                    <td>
+                      {clientPrenom} {clientNom}
+                    </td>
+                    <td className="admin-mono-cell">{reservationRef}</td>
+                    <td>{getPaymentMethodLabel(payment.methodePaiement)}</td>
+                    <td>
+                      {payment.montant
+                        ? `${payment.montant.toLocaleString("fr-FR")} FCFA`
+                        : "0 FCFA"}
+                    </td>
+                    <td>
+                      {payment.createdAt
+                        ? new Date(payment.createdAt).toLocaleDateString("fr-FR")
+                        : "—"}
+                    </td>
+                    <td>
+                      <span
+                        className={`admin-status-badge ${getPaymentStatusClass(payment.statut)}`}
+                      >
+                        {getPaymentStatusLabel(payment.statut)}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        className="admin-action-btn admin-edit-btn"
+                        onClick={() => setSelectedPaymentId(payment._id)}
+                      >
+                        Détails
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-action-btn admin-delete-btn"
+                        onClick={() => setPendingDeleteId(payment._id)}
+                      >
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
 
         {totalPages > 1 && (
           <div className="admin-pagination">
@@ -270,7 +282,10 @@ export function PaymentsTable() {
         )}
       </div>
 
-      <PaymentDetailModal paymentId={selectedPaymentId} onClose={() => setSelectedPaymentId(null)} />
+      <PaymentDetailModal
+        paymentId={selectedPaymentId}
+        onClose={() => setSelectedPaymentId(null)}
+      />
 
       <ConfirmDeleteModal
         open={!!pendingDeleteId}

@@ -112,69 +112,75 @@ export function ReservationsTable() {
             </button>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Référence</th>
-              <th>Client</th>
-              <th>Type</th>
-              <th>Date</th>
-              <th>Places</th>
-              <th>Montant Total</th>
-              <th>Montant Payé</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading && (
+        <div className="admin-table-scroll">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={9}>Chargement des réservations...</td>
+                <th>Référence</th>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Places</th>
+                <th>Montant Total</th>
+                <th>Montant Payé</th>
+                <th>Statut</th>
+                <th>Actions</th>
               </tr>
-            )}
-            {!isLoading && paginated.length === 0 && (
-              <tr>
-                <td colSpan={9}>Aucune réservation disponible</td>
-              </tr>
-            )}
-            {paginated.map((reservation) => (
-              <tr key={reservation._id}>
-                <td className="admin-mono-cell">{reservation._id.slice(0, 8)}...</td>
-                <td>
-                  {reservation.client?.prenom} {reservation.client?.nom}
-                </td>
-                <td>{reservation.type === "event" ? "Événement" : "Destination"}</td>
-                <td>
-                  {reservation.date ? new Date(reservation.date).toLocaleDateString("fr-FR") : "N/A"}
-                </td>
-                <td>{reservation.nombrePlaces || 1}</td>
-                <td>{(reservation.montantTotal || 0).toLocaleString("fr-FR")} FCFA</td>
-                <td>{(reservation.montantPaye || 0).toLocaleString("fr-FR")} FCFA</td>
-                <td>
-                  <span className={`admin-status-badge ${getReservationStatusClass(reservation.statutPaiement)}`}>
-                    {getReservationStatusLabel(reservation.statutPaiement)}
-                  </span>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="admin-action-btn admin-edit-btn"
-                    onClick={() => setSelectedReservationId(reservation._id)}
-                  >
-                    Détails
-                  </button>
-                  <button
-                    type="button"
-                    className="admin-action-btn admin-delete-btn"
-                    onClick={() => setPendingDeleteId(reservation._id)}
-                  >
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {isLoading && (
+                <tr>
+                  <td colSpan={9}>Chargement des réservations...</td>
+                </tr>
+              )}
+              {!isLoading && paginated.length === 0 && (
+                <tr>
+                  <td colSpan={9}>Aucune réservation disponible</td>
+                </tr>
+              )}
+              {paginated.map((reservation) => (
+                <tr key={reservation._id}>
+                  <td className="admin-mono-cell">{reservation._id.slice(0, 8)}...</td>
+                  <td>
+                    {reservation.client?.prenom} {reservation.client?.nom}
+                  </td>
+                  <td>{reservation.type === "event" ? "Événement" : "Destination"}</td>
+                  <td>
+                    {reservation.date
+                      ? new Date(reservation.date).toLocaleDateString("fr-FR")
+                      : "N/A"}
+                  </td>
+                  <td>{reservation.nombrePlaces || 1}</td>
+                  <td>{(reservation.montantTotal || 0).toLocaleString("fr-FR")} FCFA</td>
+                  <td>{(reservation.montantPaye || 0).toLocaleString("fr-FR")} FCFA</td>
+                  <td>
+                    <span
+                      className={`admin-status-badge ${getReservationStatusClass(reservation.statutPaiement)}`}
+                    >
+                      {getReservationStatusLabel(reservation.statutPaiement)}
+                    </span>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-edit-btn"
+                      onClick={() => setSelectedReservationId(reservation._id)}
+                    >
+                      Détails
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-delete-btn"
+                      onClick={() => setPendingDeleteId(reservation._id)}
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {totalPages > 1 && (
           <div className="admin-pagination">

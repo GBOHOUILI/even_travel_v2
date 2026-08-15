@@ -3,9 +3,13 @@ import { notFound } from "next/navigation";
 
 import { ArticleDetail } from "@/components/blog/ArticleDetail";
 import { CommentsSection } from "@/components/blog/CommentsSection";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { blogApi } from "@/features/blog/api/blog.api";
 import { createExcerpt } from "@/features/blog/lib/formatters";
 import { ApiError } from "@/lib/api";
+import { canonicalUrl } from "@/lib/seo";
+import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/structuredData";
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
@@ -31,6 +35,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     return {
       title: article.titre,
       description,
+      alternates: { canonical: canonicalUrl(`/blog/${slug}`) },
       openGraph: {
         title: article.titre,
         description,
@@ -51,12 +56,30 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   // (liste + formulaire) reste un Client Component pour l'interactivité
   // (React Query + mutation).
   const comments = await blogApi.getComments(slug).catch(() => []);
+  const url = canonicalUrl(`/blog/${slug}`);
+
+  const breadcrumbItems = [
+    { name: "Accueil", url: canonicalUrl("/") },
+    { name: "Blog", url: canonicalUrl("/blog") },
+    { name: article.titre, url },
+  ];
 
   return (
-    <main style={{ maxWidth: 1200, margin: "0 auto", padding: "var(--spacing-xl) 40px" }}>
-      <ArticleDetail article={article} commentCount={comments.length}>
-        <CommentsSection slug={slug} />
-      </ArticleDetail>
-    </main>
+    <>
+      <JsonLd data={buildArticleSchema(article, url)} />
+      <JsonLd data={buildBreadcrumbSchema(breadcrumbItems)} />
+      <Breadcrumbs
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Blog", href: "/blog" },
+          { label: article.titre },
+        ]}
+      />
+      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "var(--spacing-xl) 40px" }}>
+        <ArticleDetail article={article} commentCount={comments.length}>
+          <CommentsSection slug={slug} />
+        </ArticleDetail>
+      </main>
+    </>
   );
 }

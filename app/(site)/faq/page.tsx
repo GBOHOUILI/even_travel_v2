@@ -2,12 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { PageHero } from "@/components/ui/PageHero";
+import { FAQ_ITEMS } from "@/constants/faq";
+import { canonicalUrl } from "@/lib/seo";
+import { buildFaqSchema } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
   title: "FAQ",
   description:
     "Toutes les réponses à vos questions sur Even Travel : destinations, paiement en plusieurs fois, moyens de paiement acceptés et expériences sur mesure.",
+  alternates: { canonical: canonicalUrl("/faq") },
   openGraph: {
     title: "FAQ — Even Travel",
     description: "Questions fréquentes sur les voyages, réservations et paiements Even Travel.",
@@ -17,6 +22,7 @@ export const metadata: Metadata = {
 export default function FaqPage() {
   return (
     <>
+      <JsonLd data={buildFaqSchema(FAQ_ITEMS)} />
       <PageHero
         title="Questions fréquentes"
         subtitle="Tout ce que vous devez savoir avant de vivre une expérience unique avec Even Travel."

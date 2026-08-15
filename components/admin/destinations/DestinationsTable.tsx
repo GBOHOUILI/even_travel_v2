@@ -71,8 +71,8 @@ export function DestinationsTable() {
       destination.localisation,
       destination.prix ? `${destination.prix.toLocaleString("fr-FR")} FCFA` : "Gratuit",
       destination.categorie
-        ? (DESTINATION_CATEGORY_LABELS as Record<string, string>)[destination.categorie] ??
-          destination.categorie
+        ? ((DESTINATION_CATEGORY_LABELS as Record<string, string>)[destination.categorie] ??
+          destination.categorie)
         : "",
       destination.featured === true ? "En vedette" : "Standard",
     ]);
@@ -132,65 +132,69 @@ export function DestinationsTable() {
             </button>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Titre</th>
-              <th>Localisation</th>
-              <th>Prix</th>
-              <th>Catégorie</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading && (
+        {/* Wrapper scrollable : évite que le tableau (6 colonnes) ne casse
+            la largeur de la page ou ne soit tronqué sur mobile/tablette. */}
+        <div className="admin-table-scroll">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={6}>Chargement des destinations...</td>
+                <th>Titre</th>
+                <th>Localisation</th>
+                <th>Prix</th>
+                <th>Catégorie</th>
+                <th>Statut</th>
+                <th>Actions</th>
               </tr>
-            )}
-            {!isLoading && paginated.length === 0 && (
-              <tr>
-                <td colSpan={6}>Aucune destination disponible</td>
-              </tr>
-            )}
-            {paginated.map((destination) => (
-              <tr key={destination._id}>
-                <td>{destination.titre}</td>
-                <td>{destination.localisation}</td>
-                <td>
-                  {destination.prix
-                    ? `${destination.prix.toLocaleString("fr-FR")} FCFA`
-                    : "Gratuit"}
-                </td>
-                <td>{destination.categorie}</td>
-                <td>
-                  <StatusBadge
-                    active={destination.featured === true}
-                    activeLabel="En vedette"
-                    inactiveLabel="Standard"
-                  />
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="admin-action-btn admin-edit-btn"
-                    onClick={() => setFormModal({ open: true, destinationId: destination._id })}
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    type="button"
-                    className="admin-action-btn admin-delete-btn"
-                    onClick={() => setPendingDeleteId(destination._id)}
-                  >
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {isLoading && (
+                <tr>
+                  <td colSpan={6}>Chargement des destinations...</td>
+                </tr>
+              )}
+              {!isLoading && paginated.length === 0 && (
+                <tr>
+                  <td colSpan={6}>Aucune destination disponible</td>
+                </tr>
+              )}
+              {paginated.map((destination) => (
+                <tr key={destination._id}>
+                  <td>{destination.titre}</td>
+                  <td>{destination.localisation}</td>
+                  <td>
+                    {destination.prix
+                      ? `${destination.prix.toLocaleString("fr-FR")} FCFA`
+                      : "Gratuit"}
+                  </td>
+                  <td>{destination.categorie}</td>
+                  <td>
+                    <StatusBadge
+                      active={destination.featured === true}
+                      activeLabel="En vedette"
+                      inactiveLabel="Standard"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-edit-btn"
+                      onClick={() => setFormModal({ open: true, destinationId: destination._id })}
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-delete-btn"
+                      onClick={() => setPendingDeleteId(destination._id)}
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {totalPages > 1 && (
           <div className="admin-pagination">

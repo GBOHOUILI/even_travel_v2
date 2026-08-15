@@ -70,61 +70,63 @@ export function EventsTable() {
             <i className="fas fa-download" aria-hidden="true" /> Exporter CSV
           </button>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Titre</th>
-              <th>Date</th>
-              <th>Lieu</th>
-              <th>Prix</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading && (
+        <div className="admin-table-scroll">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={6}>Chargement des événements...</td>
+                <th>Titre</th>
+                <th>Date</th>
+                <th>Lieu</th>
+                <th>Prix</th>
+                <th>Statut</th>
+                <th>Actions</th>
               </tr>
-            )}
-            {!isLoading && (!events || events.length === 0) && (
-              <tr>
-                <td colSpan={6}>Aucun événement disponible</td>
-              </tr>
-            )}
-            {events?.map((event) => (
-              <tr key={event._id}>
-                <td>{event.nom}</td>
-                <td>{event.date ? new Date(event.date).toLocaleDateString("fr-FR") : "—"}</td>
-                <td>{event.lieu}</td>
-                <td>{event.prix ? `${event.prix.toLocaleString("fr-FR")} FCFA` : "Gratuit"}</td>
-                <td>
-                  <StatusBadge
-                    active={event.featured === true}
-                    activeLabel="Actif"
-                    inactiveLabel="Inactif"
-                  />
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="admin-action-btn admin-edit-btn"
-                    onClick={() => setFormModal({ open: true, eventId: event._id })}
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    type="button"
-                    className="admin-action-btn admin-delete-btn"
-                    onClick={() => setPendingDeleteId(event._id)}
-                  >
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {isLoading && (
+                <tr>
+                  <td colSpan={6}>Chargement des événements...</td>
+                </tr>
+              )}
+              {!isLoading && (!events || events.length === 0) && (
+                <tr>
+                  <td colSpan={6}>Aucun événement disponible</td>
+                </tr>
+              )}
+              {events?.map((event) => (
+                <tr key={event._id}>
+                  <td>{event.nom}</td>
+                  <td>{event.date ? new Date(event.date).toLocaleDateString("fr-FR") : "—"}</td>
+                  <td>{event.lieu}</td>
+                  <td>{event.prix ? `${event.prix.toLocaleString("fr-FR")} FCFA` : "Gratuit"}</td>
+                  <td>
+                    <StatusBadge
+                      active={event.featured === true}
+                      activeLabel="Actif"
+                      inactiveLabel="Inactif"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-edit-btn"
+                      onClick={() => setFormModal({ open: true, eventId: event._id })}
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-delete-btn"
+                      onClick={() => setPendingDeleteId(event._id)}
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <EventFormModal
