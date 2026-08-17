@@ -66,6 +66,13 @@ export function Footer() {
 
       <div className="footer-bottom">
         <p>&copy; {year} Even Travel. Tous droits réservés.</p>
+
+        <p className="footer-credit">
+          Conçu et développé par{" "}
+          <a href="https://zerotoone-ten.vercel.app/" target="_blank" rel="noopener noreferrer">
+            Zero To One
+          </a>
+        </p>
       </div>
     </footer>
   );
