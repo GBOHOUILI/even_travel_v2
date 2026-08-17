@@ -38,7 +38,7 @@ export function EventDetail({ event }: { event: Event }) {
         <Image
           src={imageUrl}
           alt={event.nom}
-          cover
+          fill
           sizes="(max-width: 768px) 100vw, 1400px"
           priority
         />

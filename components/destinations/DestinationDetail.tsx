@@ -23,7 +23,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
         <Image
           src={mainImageUrl}
           alt={destination.titre}
-          cover
+          fill
           sizes="(max-width: 768px) 100vw, 1400px"
           priority
         />
