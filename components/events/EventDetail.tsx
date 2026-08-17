@@ -35,13 +35,18 @@ export function EventDetail({ event }: { event: Event }) {
   return (
     <>
       <section className="hero-section">
-        <Image
-          src={imageUrl}
-          alt={event.nom}
-          fill
-          sizes="(max-width: 768px) 100vw, 1400px"
-          priority
-        />
+        <div className="hero-section__bg" aria-hidden="true">
+          <Image src={imageUrl} alt="" fill sizes="100vw" priority />
+        </div>
+        <div className="hero-section__fg">
+          <Image
+            src={imageUrl}
+            alt={event.nom}
+            fill
+            sizes="(max-width: 768px) 100vw, 1400px"
+            priority
+          />
+        </div>
       </section>
 
       <section className="main-content">

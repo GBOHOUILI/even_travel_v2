@@ -20,13 +20,18 @@ export function DestinationDetail({ destination }: { destination: Destination })
   return (
     <>
       <section className="hero-section">
-        <Image
-          src={mainImageUrl}
-          alt={destination.titre}
-          fill
-          sizes="(max-width: 768px) 100vw, 1400px"
-          priority
-        />
+        <div className="hero-section__bg" aria-hidden="true">
+          <Image src={mainImageUrl} alt="" fill sizes="100vw" priority />
+        </div>
+        <div className="hero-section__fg">
+          <Image
+            src={mainImageUrl}
+            alt={destination.titre}
+            fill
+            sizes="(max-width: 768px) 100vw, 1400px"
+            priority
+          />
+        </div>
       </section>
 
       <section className="main-content">
