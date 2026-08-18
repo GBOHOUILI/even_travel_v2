@@ -4,7 +4,11 @@ import { Inter, Italiana, Marko_One, Playfair_Display } from "next/font/google";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { AppProviders } from "@/providers/AppProviders";
 import { SITE_URL } from "@/constants/config";
-import { buildOrganizationSchema, buildWebsiteSchema } from "@/lib/structuredData";
+import {
+  buildOrganizationSchema,
+  buildWebsiteSchema,
+  buildCreatorSchema,
+} from "@/lib/structuredData";
 
 import "./globals.css";
 
@@ -43,6 +47,16 @@ export const metadata: Metadata = {
   description:
     "Agence de tourisme basée à Cotonou. Voyages sur mesure, écotourisme, circuits culturels et expériences authentiques en Afrique.",
   metadataBase: new URL(SITE_URL),
+  authors: [
+    { name: "Merveil Eldo-Moréo GBOHOUILI", url: "https://zerotoone-ten.vercel.app" },
+    { name: "Géreau TOGNIBO", url: "https://zerotoone-ten.vercel.app" },
+  ],
+  creator: "Zero To One",
+  publisher: "Zero To One",
+  generator: "Zero To One",
+  other: {
+    generator: "Zero To One — https://zerotoone-ten.vercel.app",
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",
@@ -50,6 +64,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+  },
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
   },
 };
 
@@ -70,6 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <JsonLd data={buildOrganizationSchema()} />
         <JsonLd data={buildWebsiteSchema()} />
         <AppProviders>{children}</AppProviders>
+        <JsonLd data={buildCreatorSchema()} />
       </body>
     </html>
   );

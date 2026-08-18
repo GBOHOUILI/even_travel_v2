@@ -147,3 +147,30 @@ export function buildFaqSchema(items: FaqItem[]) {
     })),
   };
 }
+
+export function buildCreatorSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: SITE_URL,
+    name: "Even Travel",
+    creator: {
+      "@type": "Organization",
+      name: "Zero To One",
+      url: "https://zerotoone-ten.vercel.app/",
+      sameAs: ["https://www.linkedin.com/company/zerotoonebuild"],
+      founder: [
+        {
+          "@type": "Person",
+          name: "Merveil Eldo-Moréo GBOHOUILI",
+          sameAs: ["https://www.linkedin.com/in/gbohouili-eldo-moreo"],
+        },
+        {
+          "@type": "Person",
+          name: "Géreau TOGNIBO",
+          sameAs: ["https://www.linkedin.com/in/oladikpo-géreau-auréole-tognibo-9a6306267"],
+        },
+      ],
+    },
+  };
+}
