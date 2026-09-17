@@ -1,20 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { EventCard } from "@/components/events/EventCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
+import { ImageCarouselModal } from "@/components/ui/ImageCarouselModal";
 import { Loader } from "@/components/ui/Loader";
 import { useEvents } from "@/features/events/hooks/useEvents";
 import { useCarousel } from "@/lib/useCarousel";
 import { useRevealOnScroll } from "@/lib/useRevealOnScroll";
+import type { EventImage } from "@/types/event";
 
 const ITEM_WIDTH = 280 + 32;
 
 export function UpcomingEventsCarousel() {
   const { data, isLoading, isError, refetch } = useEvents({ upcoming: true, limit: 6 });
+  const [gallery, setGallery] = useState<{ images: EventImage[]; index: number } | null>(null);
 
   // Priorité aux événements "featured", sinon les 6 premiers — logique identique à l'origine.
   const events = useMemo(() => {
@@ -77,7 +80,10 @@ export function UpcomingEventsCarousel() {
                   className={`event-carousel-item fade-in ${i === current ? "active" : ""}`}
                   key={event._id}
                 >
-                  <EventCard event={event} />
+                  <EventCard
+                    event={event}
+                    onOpenGallery={(images) => setGallery({ images, index: 0 })}
+                  />
                 </div>
               ))}
             </div>
@@ -100,6 +106,16 @@ export function UpcomingEventsCarousel() {
       <Link href="/events">
         <button className="events-button">Découvrez tous les événements</button>
       </Link>
+
+      {gallery && (
+        <ImageCarouselModal
+          images={gallery.images}
+          currentIndex={gallery.index}
+          alt="Événement"
+          onClose={() => setGallery(null)}
+          onIndexChange={(index) => setGallery((prev) => (prev ? { ...prev, index } : prev))}
+        />
+      )}
     </section>
   );
 }

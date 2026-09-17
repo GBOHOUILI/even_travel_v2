@@ -37,8 +37,8 @@ export const eventFormSchema = z.object({
   informationsPratiques: z.string().optional(),
   recommandations: z.string().optional(),
   featured: z.boolean(),
-  /** FileList du champ <input type="file">, non validé par Zod (voir EventFormModal). */
-  image: z.custom<FileList | undefined>().optional(),
+  /** FileList du champ <input type="file" multiple>, non validé par Zod (voir EventFormModal). */
+  images: z.custom<FileList | undefined>().optional(),
 });
 
 export type EventFormValues = z.infer<typeof eventFormSchema>;
@@ -65,5 +65,5 @@ export const EVENT_FORM_DEFAULT_VALUES: EventFormValues = {
   informationsPratiques: "",
   recommandations: "",
   featured: false,
-  image: undefined,
+  images: undefined,
 };

@@ -2,16 +2,23 @@ import { EventCard } from "@/components/events/EventCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { Loader } from "@/components/ui/Loader";
-import type { Event } from "@/types/event";
+import type { Event, EventImage } from "@/types/event";
 
 interface EventsGridProps {
   events: Event[] | undefined;
   isLoading: boolean;
   isError: boolean;
   onRetry: () => void;
+  onOpenGallery: (images: EventImage[]) => void;
 }
 
-export function EventsGrid({ events, isLoading, isError, onRetry }: EventsGridProps) {
+export function EventsGrid({
+  events,
+  isLoading,
+  isError,
+  onRetry,
+  onOpenGallery,
+}: EventsGridProps) {
   if (isLoading) {
     return (
       <div className="events-grid">
@@ -39,7 +46,7 @@ export function EventsGrid({ events, isLoading, isError, onRetry }: EventsGridPr
   return (
     <div className="events-grid">
       {events.map((event) => (
-        <EventCard key={event._id} event={event} />
+        <EventCard key={event._id} event={event} onOpenGallery={onOpenGallery} />
       ))}
     </div>
   );
