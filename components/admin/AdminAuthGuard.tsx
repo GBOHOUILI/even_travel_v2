@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
@@ -34,6 +34,7 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const { data: admin, isLoading, isError } = useAdminMe();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     if (!isLoading && (isError || !admin)) {
@@ -41,6 +42,11 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
       router.replace(loginUrl);
     }
   }, [isLoading, isError, admin, pathname, router]);
+
+  // Referme le tiroir mobile à chaque changement de page.
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname]);
 
   if (isLoading) {
     return (
@@ -57,9 +63,9 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <AdminHeader user={admin} />
+      <AdminHeader user={admin} onMenuToggle={() => setMobileNavOpen((v) => !v)} />
       <div className="admin-container">
-        <AdminSidebar />
+        <AdminSidebar open={mobileNavOpen} onClose={() => setMobileNavOpen(false)} />
         <main className="admin-main-content">{children}</main>
       </div>
     </>
