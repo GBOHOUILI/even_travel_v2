@@ -17,7 +17,9 @@ async function getDestinationOrNotFound(id: string) {
   try {
     return await destinationsApi.getById(id);
   } catch (error) {
-    if (error instanceof ApiError && error.status === 404) {
+    // Un identifiant invalide (mauvais format d'ObjectId) renvoie 400/INVALID_ID
+    // côté backend plutôt que 404 — traité comme "non trouvé" côté page.
+    if (error instanceof ApiError && (error.status === 404 || error.code === "INVALID_ID")) {
       notFound();
     }
     throw error;
