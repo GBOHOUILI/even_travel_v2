@@ -9,6 +9,7 @@ import { useDeleteEvent } from "@/features/events/hooks/useDeleteEvent";
 import { useEvents } from "@/features/events/hooks/useEvents";
 import { ApiError } from "@/lib/api";
 import { exportToCsv } from "@/lib/exportCsv";
+import { formatPrice } from "@/lib/format";
 import { useToast } from "@/providers/ToastProvider";
 
 export function EventsTable() {
@@ -42,9 +43,9 @@ export function EventsTable() {
     const headers = ["Titre", "Date", "Lieu", "Prix", "Statut"];
     const rows = (events ?? []).map((event) => [
       event.nom,
-      event.date ? new Date(event.date).toLocaleDateString("fr-FR") : "",
+      event.date ? new Date(event.date).toLocaleDateString("fr-FR") : "À venir",
       event.lieu ?? "",
-      event.prix ? `${event.prix.toLocaleString("fr-FR")} FCFA` : "Gratuit",
+      formatPrice(event.prix),
       event.featured === true ? "Actif" : "Inactif",
     ]);
     exportToCsv("evenements.csv", headers, rows);
@@ -96,9 +97,11 @@ export function EventsTable() {
               {events?.map((event) => (
                 <tr key={event._id}>
                   <td>{event.nom}</td>
-                  <td>{event.date ? new Date(event.date).toLocaleDateString("fr-FR") : "—"}</td>
+                  <td>
+                    {event.date ? new Date(event.date).toLocaleDateString("fr-FR") : "À venir"}
+                  </td>
                   <td>{event.lieu}</td>
-                  <td>{event.prix ? `${event.prix.toLocaleString("fr-FR")} FCFA` : "Gratuit"}</td>
+                  <td>{formatPrice(event.prix)}</td>
                   <td>
                     <StatusBadge
                       active={event.featured === true}

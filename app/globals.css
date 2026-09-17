@@ -2560,13 +2560,6 @@ footer {
   line-height: 1.2;
 }
 
-.price-tag .price-value::after {
-  content: "FCFA";
-  font-size: 24px;
-  margin-left: 4px;
-  color: var(--text-muted);
-}
-
 .price-tag p {
   font-size: 15px;
   color: var(--text-muted);
@@ -2616,6 +2609,39 @@ footer {
   font-size: 16px;
   color: var(--terracotta);
   font-weight: bold;
+}
+
+/* Événement dont la date est passée — accessible via un lien direct
+   puisqu'il n'apparaît plus dans les listes publiques. */
+.event-ended-banner {
+  background: var(--sand);
+  color: var(--deep-brown);
+  padding: 14px 18px;
+  border-left: 4px solid var(--terracotta);
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.event-ended-banner a {
+  color: var(--terracotta);
+  text-decoration: underline;
+}
+
+.book-button-disabled {
+  width: 100%;
+  background: var(--stone);
+  color: var(--text-muted);
+  border: none;
+  padding: 18px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: center;
+  display: block;
+  cursor: not-allowed;
 }
 
 .moments-forts-container {
@@ -4762,6 +4788,12 @@ footer {
   color: #c0392b;
   font-size: 13px;
   margin-top: 6px;
+}
+
+.admin-field-hint {
+  color: var(--text-muted, #6b6b6b);
+  font-size: 12px;
+  margin-top: 4px;
 }
 
 .admin-login-btn {

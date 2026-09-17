@@ -13,7 +13,7 @@ import {
 } from "@/features/events/lib/filterEvents";
 
 export function EventsExplorer() {
-  const { data: events, isLoading, isError, refetch } = useEvents();
+  const { data: events, isLoading, isError, refetch } = useEvents({ upcoming: true });
   const [filters, setFilters] = useState<EventFilters>(DEFAULT_EVENT_FILTERS);
 
   const filteredEvents = events ? filterEvents(events, filters) : undefined;

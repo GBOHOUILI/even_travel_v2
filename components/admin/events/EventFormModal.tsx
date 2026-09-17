@@ -119,13 +119,16 @@ export function EventFormModal({ open, eventId, onClose }: EventFormModalProps) 
           <h3 className="admin-section-title-small">Dates et Lieu</h3>
           <div className="admin-form-row">
             <div className="admin-form-group">
-              <label htmlFor="eventDate">Date de début *</label>
+              <label htmlFor="eventDate">Date de début</label>
               <input
                 id="eventDate"
                 type="datetime-local"
                 aria-invalid={!!errors.date}
                 {...register("date")}
               />
+              <p className="admin-field-hint">
+                Laisser vide pour un événement permanent ou &quot;à venir&quot;.
+              </p>
               {errors.date && <p className="admin-field-error">{errors.date.message}</p>}
             </div>
             <div className="admin-form-group">
@@ -156,8 +159,11 @@ export function EventFormModal({ open, eventId, onClose }: EventFormModalProps) 
           <h3 className="admin-section-title-small">Tarifs et Capacité</h3>
           <div className="admin-form-row">
             <div className="admin-form-group">
-              <label htmlFor="eventPrix">Prix (FCFA) *</label>
+              <label htmlFor="eventPrix">Prix (FCFA)</label>
               <input id="eventPrix" type="number" min={0} step={1000} {...register("prix")} />
+              <p className="admin-field-hint">
+                Laisser vide si le prix n&apos;est pas encore fixé.
+              </p>
               {errors.prix && <p className="admin-field-error">{errors.prix.message}</p>}
             </div>
             <div className="admin-form-group">

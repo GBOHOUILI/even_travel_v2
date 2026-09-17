@@ -14,7 +14,7 @@ import { useRevealOnScroll } from "@/lib/useRevealOnScroll";
 const ITEM_WIDTH = 280 + 32;
 
 export function UpcomingEventsCarousel() {
-  const { data, isLoading, isError, refetch } = useEvents({ limit: 6 });
+  const { data, isLoading, isError, refetch } = useEvents({ upcoming: true, limit: 6 });
 
   // Priorité aux événements "featured", sinon les 6 premiers — logique identique à l'origine.
   const events = useMemo(() => {

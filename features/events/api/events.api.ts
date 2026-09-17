@@ -4,6 +4,8 @@ import type { Event, EventResponse, EventsResponse } from "@/types/event";
 export interface GetEventsParams {
   limit?: number;
   page?: number;
+  /** N'exclut que les événements dont la date est passée (les événements sans date restent visibles). */
+  upcoming?: boolean;
 }
 
 export const eventsApi = {

@@ -2,13 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { DestinationGallery } from "@/components/destinations/DestinationGallery";
+import { formatPrice } from "@/lib/format";
 import type { Destination } from "@/types/destination";
 
 const DEFAULT_IMAGE = "/images/travel.jpg";
-
-function formatPracticalPrice(prix?: number): string {
-  return prix ? `${prix.toLocaleString("fr-FR")} FCFA` : "Sur demande";
-}
 
 export function DestinationDetail({ destination }: { destination: Destination }) {
   const mainImageUrl = destination.images?.[0]?.url || DEFAULT_IMAGE;
@@ -46,9 +43,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
           <div className="mobile-price-bar">
             <div>
               <span className="mobile-price-bar__label">Prix</span>
-              <span className="mobile-price-bar__value">
-                {formatPracticalPrice(destination.prix)}
-              </span>
+              <span className="mobile-price-bar__value">{formatPrice(destination.prix)}</span>
             </div>
             <a href="#info-card" className="mobile-price-bar__cta">
               Réserver
@@ -141,21 +136,21 @@ export function DestinationDetail({ destination }: { destination: Destination })
               <span className="info-label">🏨 Budget journalier</span>
               <span className="info-value">{destination.budgetJournalier || "50-100€"}</span>
             </div>
-            {nextAvailability && (
-              <div className="info-row">
-                <span className="info-label">📅 Prochaine disponibilité</span>
-                <span className="info-value">
-                  {new Date(nextAvailability).toLocaleDateString("fr-FR")}
-                </span>
-              </div>
-            )}
+            <div className="info-row">
+              <span className="info-label">📅 Prochaine disponibilité</span>
+              <span className="info-value">
+                {nextAvailability
+                  ? new Date(nextAvailability).toLocaleDateString("fr-FR")
+                  : "Disponible sur demande"}
+              </span>
+            </div>
             <div className="info-row">
               <span className="info-label">👥 Places disponibles</span>
               <span className="info-value">{destination.placesDisponibles ?? 0}</span>
             </div>
             <div className="info-row">
               <span className="info-label">💵 Prix</span>
-              <span className="info-value">{formatPracticalPrice(destination.prix)}</span>
+              <span className="info-value">{formatPrice(destination.prix)}</span>
             </div>
           </div>
 

@@ -9,12 +9,12 @@ import type { Event } from "@/types/event";
  */
 export interface EventDataPayload {
   nom: string;
-  date: string;
-  dateFin: string;
+  date: string | null;
+  dateFin: string | null;
   lieu: string;
   description: string;
   descriptionLongue: string;
-  prix: number;
+  prix: number | null;
   placesTotales: number;
   placesRestantes: number;
   duree: number;
@@ -34,12 +34,12 @@ export interface EventDataPayload {
 
 function computeDateFin(date: string, dateFin: string | undefined, duree: number): string {
   if (dateFin) return new Date(dateFin).toISOString();
-  if (date && duree > 1) {
+  if (duree > 1) {
     const d = new Date(date);
     d.setDate(d.getDate() + duree - 1);
     return d.toISOString();
   }
-  return date ? new Date(date).toISOString() : new Date().toISOString();
+  return new Date(date).toISOString();
 }
 
 export function buildEventDataPayload(values: EventFormValues): EventDataPayload {
@@ -52,12 +52,12 @@ export function buildEventDataPayload(values: EventFormValues): EventDataPayload
 
   return {
     nom: values.nom,
-    date: values.date ? new Date(values.date).toISOString() : new Date().toISOString(),
-    dateFin: computeDateFin(values.date, values.dateFin, values.duree),
+    date: values.date ? new Date(values.date).toISOString() : null,
+    dateFin: values.date ? computeDateFin(values.date, values.dateFin, values.duree) : null,
     lieu: values.lieu,
     description: values.description,
     descriptionLongue: values.descriptionLongue || values.description,
-    prix: values.prix,
+    prix: values.prix ?? null,
     placesTotales: values.placesTotales,
     placesRestantes: values.placesTotales,
     duree: values.duree,
@@ -98,7 +98,7 @@ export function eventToFormValues(event: Event): EventFormValues {
     dateFin: event.dateFin ? new Date(event.dateFin).toISOString().slice(0, 16) : "",
     duree: event.duree || 1,
     lieu: event.lieu || "",
-    prix: event.prix || 0,
+    prix: event.prix ?? undefined,
     placesTotales: event.placesTotales || 500,
     tailleGroupeMin: event.tailleGroupeMin || 1,
     tailleGroupeMax: event.tailleGroupeMax || 20,

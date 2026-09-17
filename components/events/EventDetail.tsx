@@ -1,13 +1,16 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { EventBookingCard } from "@/components/events/EventBookingCard";
 import { EventItinerary } from "@/components/events/EventItinerary";
+import { isEventPast } from "@/features/events/lib/filterEvents";
+import { formatPrice } from "@/lib/format";
 import type { Event } from "@/types/event";
 
-const DEFAULT_IMAGE = "/images/default-event.jpg";
+const DEFAULT_IMAGE = "/images/evenement.jpeg";
 
 function formatEventDate(event: Event): string {
-  if (!event.date) return "Date à confirmer";
+  if (!event.date) return "À venir";
 
   const format = (iso: string) =>
     new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
@@ -20,6 +23,7 @@ function formatEventDate(event: Event): string {
 
 export function EventDetail({ event }: { event: Event }) {
   const imageUrl = event.images?.[0]?.url || DEFAULT_IMAGE;
+  const ended = isEventPast(event);
   const hasMomentsForts =
     event.momentsForts && event.momentsForts.filter((m) => m?.trim()).length > 0;
   const hasItinerary = event.itineraire && event.itineraire.length > 0;
@@ -58,16 +62,29 @@ export function EventDetail({ event }: { event: Event }) {
             <span className="capacity">👥 {groupLabel}</span>
           </div>
 
+          {ended && (
+            <p className="event-ended-banner">
+              Cet événement est terminé. Consultez nos{" "}
+              <Link href="/events">prochains événements</Link> pour la suite !
+            </p>
+          )}
+
           <div className="mobile-price-bar">
             <div>
               <span className="mobile-price-bar__label">Tarif</span>
               <span className="mobile-price-bar__value">
-                {event.prix ? `${event.prix.toLocaleString("fr-FR")} FCFA` : "Sur demande"}
+                {ended ? "Terminé" : formatPrice(event.prix)}
               </span>
             </div>
-            <a href="#booking-card" className="mobile-price-bar__cta">
-              Réserver
-            </a>
+            {ended ? (
+              <Link href="/events" className="mobile-price-bar__cta">
+                Voir les événements
+              </Link>
+            ) : (
+              <a href="#booking-card" className="mobile-price-bar__cta">
+                Réserver
+              </a>
+            )}
           </div>
 
           <span className="eyebrow">À propos</span>

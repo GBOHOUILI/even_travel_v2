@@ -9,6 +9,7 @@ import { ReservationHero } from "@/components/reservation/ReservationHero";
 import { KkiapayScript } from "@/components/reservation/KkiapayScript";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { Loader } from "@/components/ui/Loader";
+import { isEventPast } from "@/features/events/lib/filterEvents";
 import { useReservableItem } from "@/features/reservations/hooks/useReservableItem";
 import type { ReservationType } from "@/types/reservation";
 
@@ -41,6 +42,7 @@ export function ReservationPageClient() {
   const { data: item, isLoading, isError, refetch } = useReservableItem(type, id);
 
   const hasMissingParams = !type || !id;
+  const isPastEvent = type === "event" && item ? isEventPast({ date: item.date }) : false;
 
   useEffect(() => {
     if (!hasMissingParams) return;
@@ -65,20 +67,35 @@ export function ReservationPageClient() {
             />
           )}
 
-          {!hasMissingParams && isLoading && <Loader label="Chargement des détails de la réservation..." />}
-
-          {!hasMissingParams && isError && (
-            <ErrorState message="Impossible de charger les détails de la réservation." onRetry={() => refetch()} />
+          {!hasMissingParams && isLoading && (
+            <Loader label="Chargement des détails de la réservation..." />
           )}
 
-          {!hasMissingParams && item && type && <ReservationForm item={item} type={type} />}
+          {!hasMissingParams && isError && (
+            <ErrorState
+              message="Impossible de charger les détails de la réservation."
+              onRetry={() => refetch()}
+            />
+          )}
+
+          {!hasMissingParams && item && type && isPastEvent && (
+            <ErrorState
+              message="Cet événement est déjà terminé, il n'est plus possible de le réserver."
+              fallbackHref="/events"
+              fallbackLabel="Voir les événements à venir"
+            />
+          )}
+
+          {!hasMissingParams && item && type && !isPastEvent && (
+            <ReservationForm item={item} type={type} />
+          )}
 
           <div className="reservation-info-box">
             <i className="fas fa-info-circle" aria-hidden="true" />
             <p>
-              <strong>Informations importantes :</strong> Votre réservation sera confirmée dans les 24 heures. Vous
-              recevrez un email de confirmation avec tous les détails de votre voyage. Pour toute question,
-              n&apos;hésitez pas à{" "}
+              <strong>Informations importantes :</strong> Votre réservation sera confirmée dans les
+              24 heures. Vous recevrez un email de confirmation avec tous les détails de votre
+              voyage. Pour toute question, n&apos;hésitez pas à{" "}
               <Link href="/contact" style={{ color: "var(--terracotta)" }}>
                 nous contacter
               </Link>
