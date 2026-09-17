@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { EventsGrid } from "@/components/events/EventsGrid";
 import { EventsSearchBar } from "@/components/events/EventsSearchBar";
+import { ImageCarouselModal } from "@/components/ui/ImageCarouselModal";
 import { PageHero } from "@/components/ui/PageHero";
 import { useEvents } from "@/features/events/hooks/useEvents";
 import {
@@ -11,10 +12,12 @@ import {
   filterEvents,
   type EventFilters,
 } from "@/features/events/lib/filterEvents";
+import type { EventImage } from "@/types/event";
 
 export function EventsExplorer() {
   const { data: events, isLoading, isError, refetch } = useEvents({ upcoming: true });
   const [filters, setFilters] = useState<EventFilters>(DEFAULT_EVENT_FILTERS);
+  const [gallery, setGallery] = useState<{ images: EventImage[]; index: number } | null>(null);
 
   const filteredEvents = events ? filterEvents(events, filters) : undefined;
 
@@ -41,9 +44,20 @@ export function EventsExplorer() {
             isLoading={isLoading}
             isError={isError}
             onRetry={() => refetch()}
+            onOpenGallery={(images) => setGallery({ images, index: 0 })}
           />
         </div>
       </section>
+
+      {gallery && (
+        <ImageCarouselModal
+          images={gallery.images}
+          currentIndex={gallery.index}
+          alt="Événement"
+          onClose={() => setGallery(null)}
+          onIndexChange={(index) => setGallery((prev) => (prev ? { ...prev, index } : prev))}
+        />
+      )}
     </>
   );
 }

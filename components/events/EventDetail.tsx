@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EventBookingCard } from "@/components/events/EventBookingCard";
+import { EventGallery } from "@/components/events/EventGallery";
 import { EventItinerary } from "@/components/events/EventItinerary";
 import { isEventPast } from "@/features/events/lib/filterEvents";
 import { formatPrice } from "@/lib/format";
@@ -156,6 +157,12 @@ export function EventDetail({ event }: { event: Event }) {
               <p>{event.recommandations}</p>
             </div>
           )}
+
+          <div className="gallery-section">
+            <span className="eyebrow">Galerie</span>
+            <h2>Découvrez {event.nom} en images</h2>
+            <EventGallery images={event.images ?? []} title={event.nom} />
+          </div>
         </div>
 
         <EventBookingCard event={event} />

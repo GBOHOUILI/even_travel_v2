@@ -123,15 +123,19 @@ export function eventToFormValues(event: Event): EventFormValues {
     informationsPratiques: event.informationsPratiques || "",
     recommandations: event.recommandations || "",
     featured: event.featured || false,
-    image: undefined,
+    images: undefined,
   };
 }
 
 /** Construit le FormData multipart envoyé à POST/PATCH /events. */
 export function buildEventFormData(values: EventFormValues): FormData {
   const formData = new FormData();
-  const imageFile = values.image?.[0];
-  if (imageFile) formData.append("image", imageFile);
+  const imageFiles = values.images;
+  if (imageFiles?.length) {
+    Array.from(imageFiles)
+      .slice(0, 5)
+      .forEach((file) => formData.append("images", file));
+  }
   formData.append("data", JSON.stringify(buildEventDataPayload(values)));
   return formData;
 }

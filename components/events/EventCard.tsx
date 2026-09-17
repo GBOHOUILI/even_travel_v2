@@ -20,17 +20,35 @@ function translateCategory(categorie?: string): string {
 
 interface EventCardProps {
   event: Event;
+  onOpenGallery: (images: Event["images"]) => void;
 }
 
-export function EventCard({ event }: EventCardProps) {
-  const imageUrl = event.images?.[0]?.url || DEFAULT_IMAGE;
+export function EventCard({ event, onOpenGallery }: EventCardProps) {
+  const images = event.images ?? [];
+  const hasMultipleImages = images.length > 1;
+  const imageUrl = images[0]?.url || DEFAULT_IMAGE;
 
   return (
     <article className="event-card visible">
-      <div className="event-image-container">
+      <div
+        className="event-image-container"
+        onClick={() => images.length > 0 && onOpenGallery(images)}
+        role="button"
+        tabIndex={0}
+        aria-label={`Voir la galerie de ${event.nom}`}
+        onKeyDown={(e) => {
+          if ((e.key === "Enter" || e.key === " ") && images.length > 0) onOpenGallery(images);
+        }}
+      >
         <span className="event-category-badge">{translateCategory(event.categorie)}</span>
         {event.featured && <span className="event-featured">⭐ En vedette</span>}
         <Image src={imageUrl} alt={event.nom} fill sizes="(max-width: 768px) 100vw, 33vw" />
+        {hasMultipleImages && (
+          <div className="image-counter">
+            <i className="fas fa-images" aria-hidden="true" />
+            <span>{images.length}</span>
+          </div>
+        )}
       </div>
       <div className="event-details">
         <h3 className="event-title">{event.nom || "Événement sans titre"}</h3>

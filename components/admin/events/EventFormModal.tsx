@@ -341,10 +341,11 @@ export function EventFormModal({ open, eventId, onClose }: EventFormModalProps) 
                 vedette
               </label>
             </div>
-            <div className="admin-form-group">
-              <label htmlFor="eventImage">Image principale</label>
-              <input id="eventImage" type="file" accept="image/*" {...register("image")} />
-            </div>
+          </div>
+          <div className="admin-form-group">
+            <label htmlFor="eventImages">Images (max 5, formats: JPG, PNG, WebP)</label>
+            <input id="eventImages" type="file" accept="image/*" multiple {...register("images")} />
+            <small>Maintenez Ctrl pour sélectionner plusieurs images</small>
           </div>
         </div>
 
