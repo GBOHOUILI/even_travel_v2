@@ -69,7 +69,7 @@ export function Footer() {
 
         <p className="footer-credit">
           Conçu et développé par{" "}
-          <a href="https://zerotoone-ten.vercel.app/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.zerotoone.bj/" target="_blank" rel="noopener noreferrer">
             Zero To One
           </a>
         </p>

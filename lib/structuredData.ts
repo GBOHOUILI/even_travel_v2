@@ -157,7 +157,7 @@ export function buildCreatorSchema() {
     creator: {
       "@type": "Organization",
       name: "Zero To One",
-      url: "https://zerotoone-ten.vercel.app/",
+      url: "https://www.zerotoone.bj/",
       sameAs: ["https://www.linkedin.com/company/zerotoonebuild"],
       founder: [
         {
