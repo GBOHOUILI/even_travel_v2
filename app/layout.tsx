@@ -48,14 +48,14 @@ export const metadata: Metadata = {
     "Agence de tourisme basée à Cotonou. Voyages sur mesure, écotourisme, circuits culturels et expériences authentiques en Afrique.",
   metadataBase: new URL(SITE_URL),
   authors: [
-    { name: "Merveil Eldo-Moréo GBOHOUILI", url: "https://zerotoone-ten.vercel.app" },
-    { name: "Géreau TOGNIBO", url: "https://zerotoone-ten.vercel.app" },
+    { name: "Merveil Eldo-Moréo GBOHOUILI", url: "https://www.zerotoone.bj" },
+    { name: "Géreau TOGNIBO", url: "https://www.zerotoone.bj" },
   ],
   creator: "Zero To One",
   publisher: "Zero To One",
   generator: "Zero To One",
   other: {
-    generator: "Zero To One — https://zerotoone-ten.vercel.app",
+    generator: "Zero To One — https://www.zerotoone.bj",
   },
   openGraph: {
     type: "website",
