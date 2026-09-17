@@ -14,7 +14,7 @@ export default function AdminLoginPage() {
   return (
     <div className="admin-login-container">
       <div className="admin-login-logo-section">
-        <Image src="/images/logo-001.png" alt="Even Travel Logo" width={200} height={68} priority />
+        <Image src="/images/logo-01.png" alt="Even Travel Logo" width={200} height={68} priority />
         <h1>Administration</h1>
         <p className="admin-login-subtitle">Accès réservé aux administrateurs</p>
       </div>
