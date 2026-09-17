@@ -1,5 +1,10 @@
 import type { Event } from "@/types/event";
 
+/** Un événement sans date n'est jamais considéré comme terminé (permanent / "à venir"). */
+export function isEventPast(event: Pick<Event, "date">): boolean {
+  return Boolean(event.date && new Date(event.date) < new Date());
+}
+
 export interface EventFilters {
   search: string;
   category: string;

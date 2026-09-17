@@ -1,5 +1,6 @@
-export function formatPrice(prix?: number): string {
-  if (prix === undefined || prix === null) return "Prix sur demande";
+export function formatPrice(prix?: number | null): string {
+  if (prix === undefined || prix === null) return "Sur demande";
+  if (prix === 0) return "Gratuit";
   return `${prix.toLocaleString("fr-FR")} FCFA`;
 }
 

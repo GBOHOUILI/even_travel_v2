@@ -124,8 +124,11 @@ export function DestinationFormModal({ open, destinationId, onClose }: Destinati
               )}
             </div>
             <div className="admin-form-group">
-              <label htmlFor="destinationPrix">Prix (FCFA) *</label>
+              <label htmlFor="destinationPrix">Prix (FCFA)</label>
               <input id="destinationPrix" type="number" min={0} step={1000} {...register("prix")} />
+              <p className="admin-field-hint">
+                Laisser vide si le prix n&apos;est pas encore fixé.
+              </p>
               {errors.prix && <p className="admin-field-error">{errors.prix.message}</p>}
             </div>
           </div>
@@ -133,6 +136,9 @@ export function DestinationFormModal({ open, destinationId, onClose }: Destinati
 
         <div className="admin-form-section">
           <h3 className="admin-section-title-small">Dates Disponibles</h3>
+          <p className="admin-field-hint">
+            Laisser toutes les dates vides pour un circuit permanent, disponible à la demande.
+          </p>
           <div className="admin-form-array">
             {datesArray.fields.map((field, index) => (
               <div key={field.id} className="admin-array-item">

@@ -9,6 +9,7 @@ import { useDeleteDestination } from "@/features/destinations/hooks/useDeleteDes
 import { useDestinations } from "@/features/destinations/hooks/useDestinations";
 import { ApiError } from "@/lib/api";
 import { exportToCsv } from "@/lib/exportCsv";
+import { formatPrice } from "@/lib/format";
 import { useToast } from "@/providers/ToastProvider";
 import { DESTINATION_CATEGORIES, DESTINATION_CATEGORY_LABELS } from "@/types/destination";
 
@@ -69,7 +70,7 @@ export function DestinationsTable() {
     const rows = filtered.map((destination) => [
       destination.titre,
       destination.localisation,
-      destination.prix ? `${destination.prix.toLocaleString("fr-FR")} FCFA` : "Gratuit",
+      formatPrice(destination.prix),
       destination.categorie
         ? ((DESTINATION_CATEGORY_LABELS as Record<string, string>)[destination.categorie] ??
           destination.categorie)
@@ -161,11 +162,7 @@ export function DestinationsTable() {
                 <tr key={destination._id}>
                   <td>{destination.titre}</td>
                   <td>{destination.localisation}</td>
-                  <td>
-                    {destination.prix
-                      ? `${destination.prix.toLocaleString("fr-FR")} FCFA`
-                      : "Gratuit"}
-                  </td>
+                  <td>{formatPrice(destination.prix)}</td>
                   <td>{destination.categorie}</td>
                   <td>
                     <StatusBadge

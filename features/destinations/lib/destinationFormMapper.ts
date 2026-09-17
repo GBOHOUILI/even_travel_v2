@@ -40,7 +40,7 @@ export function buildDestinationFormData(values: DestinationFormValues): FormDat
     formData.append(field, (values[field] as string | undefined) || "");
   });
 
-  formData.append("prix", String(values.prix || 0));
+  formData.append("prix", values.prix !== undefined ? String(values.prix) : "");
   formData.append("placesDisponibles", String(values.placesDisponibles || 50));
   formData.append("featured", String(values.featured));
   formData.append("temperatureMin", String(values.temperatureMin ?? 25));
@@ -83,7 +83,7 @@ export function destinationToFormValues(destination: Destination): DestinationFo
     description: destination.description || "",
     descriptionLongue: destination.descriptionLongue || "",
     localisation: destination.localisation || "",
-    prix: destination.prix || 0,
+    prix: destination.prix ?? undefined,
     datesDisponibles: destination.datesDisponibles?.length
       ? destination.datesDisponibles.map((d) => ({
           debut: d.debut ? new Date(d.debut).toISOString().split("T")[0] : "",

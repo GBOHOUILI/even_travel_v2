@@ -1,15 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { EVENT_CATEGORY_LABELS, type Event, type EventCategory } from "@/types/event";
+import { formatPrice } from "@/lib/format";
 
-const DEFAULT_IMAGE = "/images/default-event.jpg";
-
-function formatEventPrice(prix?: number): string {
-  return prix ? `${prix.toLocaleString("fr-FR")} FCFA` : "Gratuit";
-}
+const DEFAULT_IMAGE = "/images/evenement.jpeg";
 
 function formatEventDate(dateString?: string): string {
-  if (!dateString) return "Date à confirmer";
+  if (!dateString) return "À venir";
   return new Date(dateString).toLocaleDateString("fr-FR", {
     day: "numeric",
     month: "short",
@@ -44,7 +41,7 @@ export function EventCard({ event }: EventCardProps) {
           <i className="fas fa-map-marker-alt" aria-hidden="true" />
           <span className="event-meta-place">{event.lieu || "Lieu non spécifié"}</span>
         </div>
-        <div className="event-price">{formatEventPrice(event.prix)}</div>
+        <div className="event-price">{formatPrice(event.prix)}</div>
         <div className="event-buttons">
           <Link href={`/events/${event._id}`} className="btn-details">
             Détails

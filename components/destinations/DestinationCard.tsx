@@ -2,12 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { DESTINATION_CATEGORY_LABELS, type Destination } from "@/types/destination";
+import { formatPrice } from "@/lib/format";
 
 const DEFAULT_IMAGE = "/images/travel.jpg";
 
 function formatDestinationPrice(prix?: number): string {
-  if (!prix) return "Gratuit";
-  return `À partir de ${prix.toLocaleString("fr-FR")} FCFA`;
+  if (prix === undefined || prix === null || prix === 0) return formatPrice(prix);
+  return `À partir de ${formatPrice(prix)}`;
 }
 
 function formatDateRange(destination: Destination): string {
@@ -30,8 +31,9 @@ export function DestinationCard({ destination, onOpenGallery }: DestinationCardP
   const hasMultipleImages = images.length > 1;
   const mainImageUrl = images[0]?.url || DEFAULT_IMAGE;
   const categoryLabel = destination.categorie
-    ? DESTINATION_CATEGORY_LABELS[destination.categorie as keyof typeof DESTINATION_CATEGORY_LABELS] ??
-      destination.categorie
+    ? (DESTINATION_CATEGORY_LABELS[
+        destination.categorie as keyof typeof DESTINATION_CATEGORY_LABELS
+      ] ?? destination.categorie)
     : "Non catégorisé";
 
   return (
@@ -47,7 +49,12 @@ export function DestinationCard({ destination, onOpenGallery }: DestinationCardP
         }}
       >
         {destination.featured && <span className="destination-featured">⭐ En vedette</span>}
-        <Image src={mainImageUrl} alt={destination.titre} fill sizes="(max-width: 768px) 100vw, 33vw" />
+        <Image
+          src={mainImageUrl}
+          alt={destination.titre}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+        />
         {hasMultipleImages && (
           <div className="image-counter">
             <i className="fas fa-images" aria-hidden="true" />
@@ -84,7 +91,10 @@ export function DestinationCard({ destination, onOpenGallery }: DestinationCardP
           <Link href={`/destinations/${destination._id}`} className="btn-details">
             Détails
           </Link>
-          <Link href={`/reservation?type=destination&id=${destination._id}`} className="btn-reserve">
+          <Link
+            href={`/reservation?type=destination&id=${destination._id}`}
+            className="btn-reserve"
+          >
             Réserver
           </Link>
         </div>
