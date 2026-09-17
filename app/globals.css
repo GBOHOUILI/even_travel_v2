@@ -4887,12 +4887,40 @@ footer {
   padding: 0 40px;
 }
 
+.admin-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .admin-logo {
   display: flex;
   align-items: center;
   font-family: var(--font-italiana), serif;
   font-size: 28px;
   color: var(--terracotta);
+}
+
+/* Bouton hamburger — masqué en desktop, affiché en dessous de 1024px
+   (voir la media query plus bas) où la sidebar devient un tiroir. */
+.admin-mobile-menu-btn {
+  display: none;
+  background: var(--sand);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 16px;
+  color: var(--deep-brown);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-mobile-menu-btn:hover {
+  background: var(--terracotta);
+  color: white;
 }
 
 .admin-actions {
@@ -4942,6 +4970,16 @@ footer {
   background: var(--white);
   padding: var(--spacing-md) 0;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* En-tête interne (logo + bouton fermer) du tiroir — n'existe visuellement
+   qu'en dessous de 1024px, voir media query plus bas. */
+.admin-sidebar-mobile-header {
+  display: none;
+}
+
+.admin-sidebar-backdrop {
+  display: none;
 }
 
 .admin-sidebar-menu {
@@ -5091,41 +5129,61 @@ footer {
 /* --- Responsive --- */
 
 @media (max-width: 1024px) {
-  .admin-container {
-    flex-direction: column;
+  .admin-mobile-menu-btn {
+    display: flex;
   }
 
+  .admin-container {
+    display: block;
+  }
+
+  /* La sidebar devient un tiroir off-canvas : hors écran par défaut,
+     glisse depuis la gauche par-dessus le contenu quand elle est ouverte
+     (plutôt que l'ancienne bande de tabs qui défilait horizontalement
+     sans aucun indice visuel — 8 items dont la moitié invisibles). */
   .admin-sidebar {
-    width: 100%;
-    padding: var(--spacing-sm) 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100vh;
+    z-index: 2200;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .admin-sidebar--open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .admin-sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 36, 32, 0.6);
+    z-index: 2100;
+    animation: admin-fade-in 0.2s ease;
+  }
+
+  .admin-sidebar-mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid var(--stone);
+    margin-bottom: var(--spacing-sm);
   }
 
   .admin-sidebar-menu {
-    display: flex;
-    overflow-x: auto;
-    gap: 8px;
-    padding: 0 20px;
-  }
-
-  .admin-sidebar-menu li {
-    margin-bottom: 0;
-  }
-
-  .admin-sidebar-settings {
-    margin-top: 0;
-    border-top: none;
-    padding-top: 0;
+    padding: 0 8px;
   }
 
   .admin-sidebar-menu a {
-    white-space: nowrap;
-    border-left: none;
-    border-bottom: 3px solid transparent;
-  }
-
-  .admin-sidebar-menu a.active {
-    border-left-color: transparent;
-    border-bottom-color: var(--terracotta);
+    border-radius: 8px;
   }
 }
 
@@ -5392,6 +5450,10 @@ footer {
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  /* Les champs imbriqués (ex. jours d'itinéraire) peuvent devenir très
+     étroits sur mobile ; sans ça, un libellé à un seul mot ("Description")
+     déborde du cadre au lieu de se couper. */
+  overflow-wrap: anywhere;
 }
 
 .admin-modal-content .admin-form-group input,
@@ -5842,12 +5904,20 @@ footer {
 
 @media (max-width: 768px) {
   .admin-modal-content {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     width: 95%;
   }
 
   .admin-modal-title {
     font-size: 24px;
+  }
+
+  /* Sur mobile, le padding généreux (32px) des blocs imbriqués
+     (Itinéraire > Jour X > champs) grignote presque toute la largeur
+     utile de la modale et provoque un débordement horizontal. */
+  .admin-form-array,
+  .admin-array-item {
+    padding: var(--spacing-sm);
   }
 }
 

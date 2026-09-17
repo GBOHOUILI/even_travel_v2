@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import type { AdminUser } from "@/types/admin";
 
-export function AdminHeader({ user }: { user: AdminUser }) {
+interface AdminHeaderProps {
+  user: AdminUser;
+  onMenuToggle: () => void;
+}
+
+export function AdminHeader({ user, onMenuToggle }: AdminHeaderProps) {
   const router = useRouter();
   const logout = useLogout();
 
@@ -20,9 +25,19 @@ export function AdminHeader({ user }: { user: AdminUser }) {
   return (
     <header className="admin-header">
       <nav className="admin-nav">
-        <div className="admin-logo">
-          <span>Even</span>
-          <span style={{ color: "var(--deep-brown)" }}>Travel</span>
+        <div className="admin-nav-left">
+          <button
+            type="button"
+            className="admin-mobile-menu-btn"
+            onClick={onMenuToggle}
+            aria-label="Ouvrir le menu"
+          >
+            <i className="fas fa-bars" aria-hidden="true" />
+          </button>
+          <div className="admin-logo">
+            <span>Even</span>
+            <span style={{ color: "var(--deep-brown)" }}>Travel</span>
+          </div>
         </div>
         <div className="admin-actions">
           <span>{user.nom || user.email}</span>
