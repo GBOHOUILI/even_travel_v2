@@ -49,7 +49,7 @@ export const LEGAL_INFO = {
   registrationDate: "28 août 2024",
   address: "Îlot 3741, Parcelle C, Akogbato (12ᵉ arrondissement), Cotonou, Bénin",
   publicationManager: "Kouloud BEN RAZINE",
-  frontHost: "À COMPLÉTER (hébergeur du site)",
+  frontHost: "Render",
   apiHost: "Render (Render Services, Inc., États-Unis)",
   updatedAt: "28 septembre 2026",
 } as const;
