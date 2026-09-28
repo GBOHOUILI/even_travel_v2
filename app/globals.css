@@ -1701,7 +1701,7 @@ footer {
 /* ----- Toasts (remplace alert()) ----- */
 .toast-container {
   position: fixed;
-  bottom: var(--spacing-sm);
+  bottom: 88px;
   right: var(--spacing-sm);
   z-index: 2000;
   display: flex;
@@ -6184,5 +6184,254 @@ footer {
   .breadcrumbs {
     padding: var(--spacing-xs) 20px 0;
     font-size: 13px;
+  }
+}
+
+/* ===================================================================
+   WHATSAPP FLOTTANT, BANDEAU COOKIES, PAGES LÉGALES
+   Namespacés .whatsapp-* / .cookie-* / .legal-* / .footer-legal*
+   =================================================================== */
+
+/* ----- Bouton WhatsApp flottant ----- */
+.whatsapp-float {
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  /* Sous le header (1000), l'overlay du menu mobile (999 → au-dessus en
+     pratique car fixe plein écran) et toutes les modales (2000). */
+  z-index: 900;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.45);
+}
+
+@media (max-width: 600px) {
+  .whatsapp-float {
+    width: 52px;
+    height: 52px;
+    font-size: 28px;
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ----- Bandeau de consentement aux cookies ----- */
+.cookie-banner {
+  position: fixed;
+  left: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: min(460px, calc(100vw - 32px));
+  background: var(--white);
+  color: var(--text-dark);
+  border: 1px solid var(--stone);
+  border-radius: 12px;
+  padding: var(--spacing-sm) 20px 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  z-index: 1000;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.cookie-banner__title {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.cookie-banner__text {
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.cookie-banner__text a {
+  color: var(--terracotta);
+  text-decoration: underline;
+}
+
+.cookie-banner__text a:hover {
+  color: var(--bronze);
+}
+
+.cookie-banner__details {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+  background: var(--cream);
+  border: 1px solid var(--stone);
+  border-radius: 8px;
+}
+
+.cookie-banner__option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+.cookie-banner__option input {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  accent-color: var(--terracotta);
+}
+
+.cookie-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cookie-btn {
+  flex: 1 1 auto;
+  padding: 11px 16px;
+  background: transparent;
+  border: 2px solid var(--bronze);
+  border-radius: 8px;
+  color: var(--bronze);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cookie-btn:hover {
+  background: var(--bronze);
+  color: var(--white);
+}
+
+.cookie-btn--primary {
+  background: var(--terracotta);
+  border-color: var(--terracotta);
+  color: var(--white);
+}
+
+.cookie-btn--primary:hover {
+  background: var(--bronze);
+  border-color: var(--bronze);
+}
+
+@media (max-width: 480px) {
+  .cookie-banner {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .cookie-btn {
+    flex: 1 1 100%;
+  }
+}
+
+/* ----- Liens légaux du footer ----- */
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 20px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.footer-legal a,
+.footer-legal__button {
+  color: #374151;
+  font: inherit;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.footer-legal a:hover,
+.footer-legal__button:hover {
+  color: #111827;
+  text-decoration: underline;
+}
+
+/* ----- Pages légales ----- */
+.legal-page {
+  padding: var(--spacing-lg) var(--container-padding) var(--spacing-xl);
+}
+
+.legal-page__inner {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--white);
+  border: 1px solid var(--stone);
+  border-radius: 16px;
+  padding: var(--spacing-lg);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.legal-page__inner h1 {
+  font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+  margin-bottom: 4px;
+}
+
+.legal-page__updated {
+  font-size: 14px;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--stone);
+}
+
+.legal-page__inner h2 {
+  font-size: 22px;
+  margin: var(--spacing-md) 0 var(--spacing-xs);
+}
+
+.legal-page__inner p {
+  margin-bottom: var(--spacing-sm);
+}
+
+.legal-page__inner ul {
+  list-style: disc;
+  padding-left: 24px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.legal-page__inner li {
+  margin-bottom: 6px;
+}
+
+.legal-page__inner strong {
+  color: var(--text-dark);
+}
+
+.legal-page__inner a {
+  color: var(--terracotta);
+  text-decoration: underline;
+}
+
+.legal-page__inner a:hover {
+  color: var(--bronze);
+}
+
+@media (max-width: 600px) {
+  .legal-page__inner {
+    padding: var(--spacing-md) var(--spacing-sm);
   }
 }

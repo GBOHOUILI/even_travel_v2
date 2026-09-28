@@ -1,4 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
+
+import { CookieSettingsButton } from "@/components/consent/CookieSettingsButton";
 
 import { CONTACT_INFO, SOCIAL_LINKS } from "@/constants/config";
 
@@ -66,6 +69,13 @@ export function Footer() {
 
       <div className="footer-bottom">
         <p>&copy; {year} Even Travel. Tous droits réservés.</p>
+
+        <nav className="footer-legal" aria-label="Informations légales">
+          <Link href="/mentions-legales">Mentions légales</Link>
+          <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>
+          <Link href="/politique-de-cookies">Politique de cookies</Link>
+          <CookieSettingsButton className="footer-legal__button" />
+        </nav>
 
         <p className="footer-credit">
           Conçu et développé par{" "}
