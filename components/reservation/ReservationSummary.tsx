@@ -1,5 +1,7 @@
-import { calculerTotal, formatFCFA } from "@/features/reservations/lib/pricing";
+import { PriceEur } from "@/components/ui/PriceEur";
+import { calculerTotal } from "@/features/reservations/lib/pricing";
 import type { ReservableItem } from "@/features/reservations/hooks/useReservableItem";
+import { formatFCFA } from "@/lib/format";
 import type { PaymentPlan, ReservationType } from "@/types/reservation";
 
 interface ReservationSummaryProps {
@@ -16,7 +18,9 @@ export function ReservationSummary({ item, type, participants, plan }: Reservati
     <div className="reservation-summary">
       <div className="reservation-summary-header">
         <div className="reservation-summary-title">Résumé de votre réservation</div>
-        <div className="reservation-summary-badge">{type === "event" ? "Événement" : "Destination"}</div>
+        <div className="reservation-summary-badge">
+          {type === "event" ? "Événement" : "Destination"}
+        </div>
       </div>
       <div className="reservation-summary-content">
         <div className="reservation-summary-item">
@@ -29,12 +33,18 @@ export function ReservationSummary({ item, type, participants, plan }: Reservati
         </div>
         <div className="reservation-summary-item">
           <div className="reservation-summary-label">Prix unitaire</div>
-          <div className="reservation-summary-value">{formatFCFA(item.prix)}</div>
+          <div className="reservation-summary-value">
+            {formatFCFA(item.prix)}
+            <PriceEur montant={item.prix} />
+          </div>
         </div>
       </div>
       <div className="reservation-summary-price">
         <div className="reservation-summary-label">Total pour {participants} personne(s)</div>
-        <div className="amount">{formatFCFA(total)}</div>
+        <div className="amount">
+          {formatFCFA(total)}
+          <PriceEur montant={total} />
+        </div>
       </div>
     </div>
   );

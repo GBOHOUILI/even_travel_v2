@@ -4,6 +4,7 @@ import Link from "next/link";
 import { DestinationGallery } from "@/components/destinations/DestinationGallery";
 import { formatPrice } from "@/lib/format";
 import type { Destination } from "@/types/destination";
+import { PriceEur } from "@/components/ui/PriceEur";
 
 const DEFAULT_IMAGE = "/images/travel.jpg";
 
@@ -44,6 +45,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
             <div>
               <span className="mobile-price-bar__label">Prix</span>
               <span className="mobile-price-bar__value">{formatPrice(destination.prix)}</span>
+              <PriceEur montant={destination.prix} />
             </div>
             <a href="#info-card" className="mobile-price-bar__cta">
               Réserver
@@ -134,7 +136,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
             </div>
             <div className="info-row">
               <span className="info-label">🏨 Budget journalier</span>
-              <span className="info-value">{destination.budgetJournalier || "50-100€"}</span>
+              <span className="info-value">{destination.budgetJournalier || "Sur demande"}</span>
             </div>
             <div className="info-row">
               <span className="info-label">📅 Prochaine disponibilité</span>
@@ -150,7 +152,10 @@ export function DestinationDetail({ destination }: { destination: Destination })
             </div>
             <div className="info-row">
               <span className="info-label">💵 Prix</span>
-              <span className="info-value">{formatPrice(destination.prix)}</span>
+              <span className="info-value">
+                {formatPrice(destination.prix)}
+                <PriceEur montant={destination.prix} />
+              </span>
             </div>
           </div>
 

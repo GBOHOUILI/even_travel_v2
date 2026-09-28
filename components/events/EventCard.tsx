@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+
+import { PriceEur } from "@/components/ui/PriceEur";
 import { EVENT_CATEGORY_LABELS, type Event, type EventCategory } from "@/types/event";
 import { formatPrice } from "@/lib/format";
 
@@ -59,7 +61,10 @@ export function EventCard({ event, onOpenGallery }: EventCardProps) {
           <i className="fas fa-map-marker-alt" aria-hidden="true" />
           <span className="event-meta-place">{event.lieu || "Lieu non spécifié"}</span>
         </div>
-        <div className="event-price">{formatPrice(event.prix)}</div>
+        <div className="event-price">
+          {formatPrice(event.prix)}
+          <PriceEur montant={event.prix} />
+        </div>
         <div className="event-buttons">
           <Link href={`/events/${event._id}`} className="btn-details">
             Détails
