@@ -6,6 +6,7 @@ import { eventsApi } from "@/features/events/api/events.api";
 import { blogApi } from "@/features/blog/api/blog.api";
 
 const staticRoutes = ["", "/events", "/destinations", "/blog", "/contact", "/about", "/faq"];
+const legalRoutes = ["/mentions-legales", "/politique-de-confidentialite", "/politique-de-cookies"];
 
 // Le sitemap est généré à la requête (pas au build) : si le backend ne
 // répond pas (cold start Render, panne...), on ne fait pas planter la
@@ -33,6 +34,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1 : 0.7,
   }));
 
+  const legalEntries: MetadataRoute.Sitemap = legalRoutes.map((route) => ({
+    url: `${SITE_URL}${route}`,
+    lastModified: new Date(),
+    changeFrequency: "yearly",
+    priority: 0.3,
+  }));
+
   const destinationEntries: MetadataRoute.Sitemap = destinations.map((d) => ({
     url: `${SITE_URL}/destinations/${d._id}`,
     lastModified: d.updatedAt ? new Date(d.updatedAt) : new Date(),
@@ -54,5 +62,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...destinationEntries, ...eventEntries, ...articleEntries];
+  return [
+    ...staticEntries,
+    ...legalEntries,
+    ...destinationEntries,
+    ...eventEntries,
+    ...articleEntries,
+  ];
 }

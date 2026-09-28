@@ -33,3 +33,23 @@ export const NAV_LINKS = [
   { href: "/about", label: "À propos" },
   { href: "/faq", label: "FAQ" },
 ] as const;
+
+export const WHATSAPP = {
+  // Numéro international sans "+" ni espaces (format wa.me)
+  number: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? CONTACT_INFO.phone.replace(/\D/g, ""),
+  defaultMessage: "Bonjour, je souhaite en savoir plus sur vos services.",
+} as const;
+
+// Informations légales (source : extrait RCCM du 28-08-2024)
+export const LEGAL_INFO = {
+  companyName: "Even Travel",
+  owner: "Kouloud BEN RAZINE",
+  activity: "Tourisme, hébergement, location de véhicules et activités touristiques et culturelles",
+  rccm: "RB/COT/24 A 103226",
+  registrationDate: "28 août 2024",
+  address: "Îlot 3741, Parcelle C, Akogbato (12ᵉ arrondissement), Cotonou, Bénin",
+  publicationManager: "Kouloud BEN RAZINE",
+  frontHost: "À COMPLÉTER (hébergeur du site)",
+  apiHost: "Render (Render Services, Inc., États-Unis)",
+  updatedAt: "28 septembre 2026",
+} as const;
