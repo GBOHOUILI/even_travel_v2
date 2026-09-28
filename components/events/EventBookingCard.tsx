@@ -3,6 +3,7 @@ import Link from "next/link";
 import { isEventPast } from "@/features/events/lib/filterEvents";
 import { EVENT_CATEGORY_LABELS, type Event, type EventCategory } from "@/types/event";
 import { formatPrice } from "@/lib/format";
+import { PriceEur } from "@/components/ui/PriceEur";
 
 interface EventBookingCardProps {
   event: Event;
@@ -35,6 +36,7 @@ export function EventBookingCard({ event }: EventBookingCardProps) {
       <div className="price-tag">
         <span className="eyebrow">Tarif</span>
         <p className="price-value">{formatPrice(event.prix)}</p>
+        <PriceEur montant={event.prix} />
         <p>Par personne</p>
       </div>
 

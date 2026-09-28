@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { PriceEur } from "@/components/ui/PriceEur";
 import { DESTINATION_CATEGORY_LABELS, type Destination } from "@/types/destination";
 import { formatPrice } from "@/lib/format";
 
@@ -85,7 +86,10 @@ export function DestinationCard({ destination, onOpenGallery }: DestinationCardP
           </div>
         </div>
 
-        <div className="destination-price">{formatDestinationPrice(destination.prix)}</div>
+        <div className="destination-price">
+          {formatDestinationPrice(destination.prix)}
+          <PriceEur montant={destination.prix} />
+        </div>
 
         <div className="destination-buttons">
           <Link href={`/destinations/${destination._id}`} className="btn-details">

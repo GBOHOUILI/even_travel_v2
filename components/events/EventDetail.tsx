@@ -4,6 +4,7 @@ import Link from "next/link";
 import { EventBookingCard } from "@/components/events/EventBookingCard";
 import { EventGallery } from "@/components/events/EventGallery";
 import { EventItinerary } from "@/components/events/EventItinerary";
+import { PriceEur } from "@/components/ui/PriceEur";
 import { isEventPast } from "@/features/events/lib/filterEvents";
 import { formatPrice } from "@/lib/format";
 import type { Event } from "@/types/event";
@@ -76,6 +77,7 @@ export function EventDetail({ event }: { event: Event }) {
               <span className="mobile-price-bar__value">
                 {ended ? "Terminé" : formatPrice(event.prix)}
               </span>
+              {!ended && <PriceEur montant={event.prix} />}
             </div>
             {ended ? (
               <Link href="/events" className="mobile-price-bar__cta">

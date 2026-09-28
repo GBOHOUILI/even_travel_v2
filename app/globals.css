@@ -6435,3 +6435,26 @@ footer {
     padding: var(--spacing-md) var(--spacing-sm);
   }
 }
+
+/* ----- Prix : équivalent indicatif en euros ----- */
+.price-eur {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.info-value .price-eur,
+.reservation-total-amount,
+.reservation-payment-due-amount {
+  text-align: right;
+}
+
+.price-eur-note {
+  margin-top: var(--spacing-xs);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
