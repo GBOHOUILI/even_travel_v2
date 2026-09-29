@@ -4,12 +4,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import Link from "next/link";
 
 import { ReservationPriceDisplay } from "@/components/reservation/ReservationPriceDisplay";
 import { ReservationSummary } from "@/components/reservation/ReservationSummary";
 import { useVerifyPayment } from "@/features/payments/hooks/useVerifyPayment";
 import { getDefaultDate, getTodayISO } from "@/features/reservations/lib/defaultDate";
-import { buildReservationSchema, type ReservationFormValues } from "@/features/reservations/lib/reservationSchema";
+import {
+  buildReservationSchema,
+  type ReservationFormValues,
+} from "@/features/reservations/lib/reservationSchema";
 import { useInitierReservation } from "@/features/reservations/hooks/useInitierReservation";
 import { useKkiapayWidget } from "@/features/reservations/hooks/useKkiapayWidget";
 import type { ReservableItem } from "@/features/reservations/hooks/useReservableItem";
@@ -91,44 +95,63 @@ export function ReservationForm({ item, type }: ReservationFormProps) {
       message: "",
       plan: "unique",
       methode: "carte",
+      consent: undefined,
     },
   });
 
   const participants = watch("participants") || 1;
   const plan = watch("plan");
 
-  const onSubmit = handleSubmit(async (values) => {
-    setSubmitError(null);
+  const onSubmit = handleSubmit(
+    async (values) => {
+      setSubmitError(null);
 
-    try {
-      const { reservation, kkiapay } = await initierReservation.mutateAsync({
-        client: { nom: values.nom, prenom: values.prenom, email: values.email, telephone: values.telephone },
-        type,
-        itemId: item._id,
-        date: values.date,
-        nombrePlaces: values.participants,
-        message: values.message,
-        planPaiement: values.plan,
-        methodePaiement: values.methode,
-      });
+      try {
+        const { reservation, kkiapay } = await initierReservation.mutateAsync({
+          client: {
+            nom: values.nom,
+            prenom: values.prenom,
+            email: values.email,
+            telephone: values.telephone,
+          },
+          type,
+          itemId: item._id,
+          date: values.date,
+          nombrePlaces: values.participants,
+          message: values.message,
+          planPaiement: values.plan,
+          methodePaiement: values.methode,
+          consent: values.consent,
+        });
 
-      pendingReservationId.current = reservation._id;
+        pendingReservationId.current = reservation._id;
 
-      showToast("Réservation enregistrée ! Ouverture du paiement sécurisé...", "success");
-      openKkiapayWidget({
-        amount: kkiapay.amount,
-        api_key: kkiapay.publicKey,
-        sandbox: kkiapay.sandbox,
-        data: JSON.stringify(kkiapay.data),
-      });
-    } catch (error) {
-      const message =
-        error instanceof ApiError
-          ? error.message
-          : "Une erreur est survenue pendant le traitement de la réservation.";
-      setSubmitError(message);
-    }
-  });
+        showToast("Réservation enregistrée ! Ouverture du paiement sécurisé...", "success");
+        openKkiapayWidget({
+          amount: kkiapay.amount,
+          api_key: kkiapay.publicKey,
+          sandbox: kkiapay.sandbox,
+          data: JSON.stringify(kkiapay.data),
+        });
+      } catch (error) {
+        const message =
+          error instanceof ApiError
+            ? error.message
+            : "Une erreur est survenue pendant le traitement de la réservation.";
+        setSubmitError(message);
+      }
+    },
+    (formErrors) => {
+      const firstErrorField = Object.keys(formErrors)[0];
+      if (!firstErrorField) return;
+
+      const firstError = formErrors[firstErrorField as keyof typeof formErrors];
+      showToast(firstError?.message || "Merci de corriger les champs indiqués en rouge.", "error");
+      document
+        .getElementById(firstErrorField)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    },
+  );
 
   return (
     <form onSubmit={onSubmit} noValidate>
@@ -156,8 +179,15 @@ export function ReservationForm({ item, type }: ReservationFormProps) {
         </div>
         <div className="reservation-form-group">
           <label htmlFor="telephone">Téléphone *</label>
-          <input id="telephone" type="tel" {...register("telephone")} aria-invalid={!!errors.telephone} />
-          {errors.telephone && <p className="reservation-field-error">{errors.telephone.message}</p>}
+          <input
+            id="telephone"
+            type="tel"
+            {...register("telephone")}
+            aria-invalid={!!errors.telephone}
+          />
+          {errors.telephone && (
+            <p className="reservation-field-error">{errors.telephone.message}</p>
+          )}
         </div>
       </div>
 
@@ -180,18 +210,27 @@ export function ReservationForm({ item, type }: ReservationFormProps) {
               />
             )}
           />
-          {errors.participants && <p className="reservation-field-error">{errors.participants.message}</p>}
+          {errors.participants && (
+            <p className="reservation-field-error">{errors.participants.message}</p>
+          )}
           {item.placesDisponibles <= 10 && (
             <div className="reservation-places-warning">
               <i className="fas fa-exclamation-circle" aria-hidden="true" />
-              Il ne reste que {item.placesDisponibles} place{item.placesDisponibles > 1 ? "s" : ""} disponible
+              Il ne reste que {item.placesDisponibles} place{item.placesDisponibles > 1 ? "s" : ""}{" "}
+              disponible
               {item.placesDisponibles > 1 ? "s" : ""}
             </div>
           )}
         </div>
         <div className="reservation-form-group">
           <label htmlFor="selectedDate">Date de participation *</label>
-          <input id="selectedDate" type="date" min={getTodayISO()} {...register("date")} aria-invalid={!!errors.date} />
+          <input
+            id="selectedDate"
+            type="date"
+            min={getTodayISO()}
+            {...register("date")}
+            aria-invalid={!!errors.date}
+          />
           {errors.date && <p className="reservation-field-error">{errors.date.message}</p>}
         </div>
       </div>
@@ -234,8 +273,32 @@ export function ReservationForm({ item, type }: ReservationFormProps) {
         </div>
       </div>
 
+      <div className="reservation-form-group">
+        <label className="reservation-consent-label" htmlFor="consent">
+          <input
+            id="consent"
+            type="checkbox"
+            aria-invalid={!!errors.consent}
+            {...register("consent")}
+          />
+          <span>
+            Vos données sont utilisées uniquement pour traiter votre réservation. En validant, vous
+            acceptez notre{" "}
+            <Link href="/politique-de-confidentialite" target="_blank">
+              politique de confidentialité
+            </Link>
+            .
+          </span>
+        </label>
+        {errors.consent && <p className="reservation-field-error">{errors.consent.message}</p>}
+      </div>
+
       {submitError && (
-        <p className="reservation-field-error" role="alert" style={{ marginTop: "var(--spacing-sm)" }}>
+        <p
+          className="reservation-field-error"
+          role="alert"
+          style={{ marginTop: "var(--spacing-sm)" }}
+        >
           <i className="fas fa-exclamation-triangle" aria-hidden="true" /> {submitError}
         </p>
       )}
@@ -255,7 +318,9 @@ export function ReservationForm({ item, type }: ReservationFormProps) {
             ? "Vérification du paiement..."
             : "Confirmer la réservation"}
       </button>
-      <p className="reservation-terms">En validant, vous acceptez nos conditions générales de vente</p>
+      <p className="reservation-terms">
+        En validant, vous acceptez nos conditions générales de vente
+      </p>
     </form>
   );
 }

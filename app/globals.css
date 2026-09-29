@@ -13,6 +13,7 @@
   --white: #ffffff;
   --text-dark: #2a2420;
   --text-muted: #6b5d52;
+  --error: #c0392b;
   --spacing-xs: 8px;
   --spacing-sm: 16px;
   --spacing-md: 32px;
@@ -6457,4 +6458,42 @@ footer {
   font-size: 12px;
   line-height: 1.5;
   color: var(--text-muted);
+}
+
+/* ----- Case de consentement (contact, réservation) ----- */
+.contact-consent-group,
+.reservation-consent-group {
+  display: flex;
+}
+
+.contact-consent-label,
+.reservation-consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.contact-consent-label input,
+.reservation-consent-label input {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 3px 12px 0 0;
+  accent-color: var(--terracotta);
+}
+
+.contact-consent-label a,
+.reservation-consent-label a {
+  color: var(--terracotta);
+  text-decoration: underline;
+}
+
+.contact-consent-label a:hover,
+.reservation-consent-label a:hover {
+  color: var(--bronze);
 }

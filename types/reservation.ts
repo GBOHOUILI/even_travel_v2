@@ -31,6 +31,7 @@ export interface InitierReservationPayload {
   planPaiement: PaymentPlan;
   /** Envoyé mais actuellement ignoré par le backend — voir le type ci-dessus. */
   methodePaiement: PaymentMethod;
+  consent: boolean;
 }
 
 /**

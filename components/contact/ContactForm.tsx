@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -23,7 +25,7 @@ export function ContactForm() {
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", subject: undefined, message: "" },
+    defaultValues: { name: "", email: "", subject: undefined, message: "", consent: undefined },
   });
 
   const onSubmit = handleSubmit(async (values) => {
@@ -95,6 +97,26 @@ export function ContactForm() {
           {...register("message")}
         />
         {errors.message && <p className="contact-field-error">{errors.message.message}</p>}
+      </div>
+
+      <div className="contact-form-group contact-consent-group">
+        <label className="contact-consent-label" htmlFor="consent">
+          <input
+            id="consent"
+            type="checkbox"
+            aria-invalid={!!errors.consent}
+            {...register("consent")}
+          />
+          <span>
+            Vos données sont utilisées uniquement pour répondre à votre demande. En soumettant ce
+            formulaire, vous acceptez notre{" "}
+            <Link href="/politique-de-confidentialite" target="_blank">
+              politique de confidentialité
+            </Link>
+            .
+          </span>
+        </label>
+        {errors.consent && <p className="contact-field-error">{errors.consent.message}</p>}
       </div>
 
       <button type="submit" className="submit-btn" disabled={isSubmitting}>

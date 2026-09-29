@@ -21,7 +21,10 @@ export function buildReservationSchema(maxPlaces: number) {
       .number({ invalid_type_error: "Merci d'indiquer un nombre de personnes." })
       .int()
       .min(1, "Au moins 1 participant est requis.")
-      .max(maxPlaces, `Maximum ${maxPlaces} place${maxPlaces > 1 ? "s" : ""} disponible${maxPlaces > 1 ? "s" : ""}.`),
+      .max(
+        maxPlaces,
+        `Maximum ${maxPlaces} place${maxPlaces > 1 ? "s" : ""} disponible${maxPlaces > 1 ? "s" : ""}.`,
+      ),
     date: z
       .string()
       .min(1, "Merci de sélectionner une date.")
@@ -29,6 +32,11 @@ export function buildReservationSchema(maxPlaces: number) {
     message: z.string().trim().optional(),
     plan: z.enum(["unique", "deux_tranches"]),
     methode: z.enum(["carte", "mtn", "moov"]),
+    consent: z.literal(true, {
+      errorMap: () => ({
+        message: "Merci d'accepter notre politique de confidentialité pour continuer.",
+      }),
+    }),
   });
 }
 
