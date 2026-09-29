@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import { useInitierReservation } from "@/features/reservations/hooks/useInitierR
 import { useKkiapayWidget } from "@/features/reservations/hooks/useKkiapayWidget";
 import type { ReservableItem } from "@/features/reservations/hooks/useReservableItem";
 import { ApiError } from "@/lib/api";
+import { trackEvent } from "@/lib/analytics";
 import { useToast } from "@/providers/ToastProvider";
 import type { ReservationType } from "@/types/reservation";
 
@@ -39,6 +40,7 @@ interface ReservationFormProps {
 
 export function ReservationForm({ item, type }: ReservationFormProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { showToast } = useToast();
   const initierReservation = useInitierReservation();
   const verifyPayment = useVerifyPayment();
@@ -125,6 +127,7 @@ export function ReservationForm({ item, type }: ReservationFormProps) {
         });
 
         pendingReservationId.current = reservation._id;
+        trackEvent("form_submit", pathname, { formName: "reservation" });
 
         showToast("Réservation enregistrée ! Ouverture du paiement sécurisé...", "success");
         openKkiapayWidget({

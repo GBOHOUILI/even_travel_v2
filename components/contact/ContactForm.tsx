@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,9 +13,11 @@ import {
 } from "@/features/contact/lib/contactSchema";
 import { useSendContactMessage } from "@/features/contact/hooks/useSendContactMessage";
 import { ApiError } from "@/lib/api";
+import { trackEvent } from "@/lib/analytics";
 import { useToast } from "@/providers/ToastProvider";
 
 export function ContactForm() {
+  const pathname = usePathname();
   const { showToast } = useToast();
   const sendMessage = useSendContactMessage();
 
@@ -32,6 +35,7 @@ export function ContactForm() {
     try {
       await sendMessage.mutateAsync(values);
       showToast("Votre message a bien été envoyé, nous vous répondrons rapidement.", "success");
+      trackEvent("form_submit", pathname, { formName: "contact" });
       reset();
     } catch (error) {
       const message =

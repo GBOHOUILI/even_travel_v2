@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const ADMIN_NAV_LINKS = [
   { href: "/admin", label: "Tableau de Bord", icon: "fa-chart-line" },
+  { href: "/admin/analytics", label: "Analytique", icon: "fa-chart-bar" },
   { href: "/admin/events", label: "Événements", icon: "fa-calendar-alt" },
   { href: "/admin/destinations", label: "Destinations", icon: "fa-map-marked-alt" },
   { href: "/admin/blogs", label: "Articles", icon: "fa-blog" },
